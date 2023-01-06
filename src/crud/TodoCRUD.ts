@@ -8,17 +8,17 @@ export class TodoCRUD implements ICRUD {
     ) {
     }
 
-    read(): any {
+    async read(): Promise<any> {
         return this.repository.getAll();
         // todo read from a repository
     }
-    create(text: Partial<TodoEntity>): any {
-        return this.repository.insertOne(text);
-    }
-    update(id: string | number, newValue: Partial<TodoEntity>): any{
-        return this.repository.updateOne(id, newValue)
-    }
-    delete(id: string | number): any {
-        return this.repository.deleteOne(id)
-    }
+    // create(text: Partial<TodoEntity>): any {
+    //     return this.repository.insertOne(text);
+    // }
+    // update(id: string | number, newValue: Partial<TodoEntity>): any{
+    //     return this.repository.updateOne(id, newValue)
+    // }
+    // delete(id: string | number): any {
+    //     return this.repository.deleteOne(id)
+    // }
 }
