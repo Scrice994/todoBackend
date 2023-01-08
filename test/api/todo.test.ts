@@ -1,7 +1,7 @@
 import axios from "axios";
 import { expect, describe, it, beforeEach, jest } from "@jest/globals";
-import { clearDatabase, initDatabase} from "./testUtils";
-const todoTest = { text: "asdasdasdasdasd" };
+import { clearDatabase, initDatabase} from "./utils/testUtils";
+const todoTest = { text: "TestoProva" };
 
 
 const dbInit = [{
@@ -36,20 +36,20 @@ describe("api", () => {
       });
     });
 
-    // describe.skip("POST", () => {
-    //   it("Should insert a new todo", async () => {
-    //     const response = await axios.post(
-    //       TODO_URL,
-    //       todoTest
-    //     );
+     describe("POST", () => {
+       it("Should insert a new todo", async () => {
+         const response = await axios.post(
+           TODO_URL,
+           todoTest
+         )
 
-    //     expect(response.data).toEqual({
-    //       id: response.data.id,
-    //       text: 'asdasdasdasdasd',
-    //       completed: false
-    //     });
-    //   });
-    // });
+         expect(response.data).toEqual({
+           id: response.data.id,
+           text: 'TestoProva',
+           completed: false
+         });
+       });
+     });
 
     // describe.skip("PUT", () => {
     //   it("Should update todo", async () => {

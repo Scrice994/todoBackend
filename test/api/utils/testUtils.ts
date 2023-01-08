@@ -15,7 +15,7 @@ export const initDatabase = async (dbInit: any[]) => {
     const db = client.db(dbName);
     const collection = db.collection('todos');
 
-    collection.insertMany(
+    await collection.insertMany(
         dbInit.map((dbRecord) => ({
         _id: uuid.v4,
         __v: 1,

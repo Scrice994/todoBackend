@@ -14,9 +14,10 @@ export class TodoRepository implements IRepository<TodoEntity>{
         console.log(result)
         return result
     }
-    // async insertOne(text: Partial<TodoEntity>): Promise<any> {
-    //     return await this.dataStorage.create(newTodo)
-    // }
+
+    async insertOne(newTodo: string): Promise<any> {
+        return await this.dataStorage.create(newTodo)
+    }
 
     // async updateOne(id: string | number, newValue: Partial<TodoEntity>): Promise<any | null> {
     //     return await this.dataStorage.findAndUpdate({id: id}, {completed: newValue}, {new: true})

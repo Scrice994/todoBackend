@@ -28,13 +28,12 @@ app.get("/todo", async (req, res) => {
   res.status(200).json(todos);
 });
 
-// app.post("/todo", async (req, res) => {
-//   const { text } = req.body
-
-//   const insertNewTodo = await new TodoCRUD(repository).create(text);
-
-//   res.status(200).json({text: insertNewTodo.text, completed: insertNewTodo.completed, id: insertNewTodo.id});
-// })
+app.post("/todo", async (req, res) => {
+  const { text } = req.body
+  console.log(text)
+  const insertNewTodo = await new TodoCRUD(repository).create(text)
+  res.status(200).json(insertNewTodo);
+})
 
 // app.put("/todo/:id", async (req, res) => {
 //   const { id } = req.params;

@@ -19,7 +19,6 @@ describe("unit", () => {
 
           const repository = new TodoRepository(mongooseDataStorageMock);
 
-
           expect(await repository.getAll())
             .toEqual([{
                 id: 'mockId',
@@ -30,7 +29,17 @@ describe("unit", () => {
       });
 
       describe("insertOne()", () => {
-        it.skip("Should create a new TodoEntity object", () => {});
+        it("Should create a new TodoEntity object", async () => {
+          const repository = new TodoRepository(mongooseDataStorageMock);
+
+          expect(await repository.insertOne('mockTextProva'))
+            .toEqual({
+              id: 'mockId',
+              text: 'mockTextProva',
+              completed: false
+            })
+
+        });
       });
 
       describe("updateOne()", () => {

@@ -12,9 +12,9 @@ export class TodoCRUD implements ICRUD {
         return this.repository.getAll();
         // todo read from a repository
     }
-    // create(text: Partial<TodoEntity>): any {
-    //     return this.repository.insertOne(text);
-    // }
+    create(text: string): any {
+        return this.repository.insertOne(text);
+    }
     // update(id: string | number, newValue: Partial<TodoEntity>): any{
     //     return this.repository.updateOne(id, newValue)
     // }

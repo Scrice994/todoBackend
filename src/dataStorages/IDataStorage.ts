@@ -1,6 +1,8 @@
+import { TodoEntity } from "src/entities/TodoEntity";
+
 export interface IDataStorage<T> {
     find(): Promise<T[]>;
-    // create();
+    create(newTodo: string): Promise<any>;
     // update();
     // delete();
 }
