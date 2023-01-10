@@ -25,11 +25,6 @@ describe("api", () => {
 
     describe("GET", () => {
       it("Should get all todos in storage", async () => {
-        // const newTodo = await axios.post(
-        //   TODO_URL,
-        //   todoTest
-        // );
-
         const response = await axios.get(TODO_URL);
 
         expect(response.data).toEqual(dbInit);
@@ -51,24 +46,21 @@ describe("api", () => {
        });
      });
 
-    // describe.skip("PUT", () => {
-    //   it("Should update todo", async () => {
-    //     const newTodo = await axios.post(
-    //       TODO_URL,
-    //       todoTest
-    //     );
+     describe("PUT", () => {
+       it("Should update todo", async () => {
 
-    //     const updatedTodo = await axios.put(
-    //       `${TODO_URL}/${newTodo.data.id}`,
-    //       { completed: true }
-    //     );
+         const updatedTodo = await axios.put(
+           `${TODO_URL}/1`,
+           { completed: true }
+         );
 
-    //     expect(updatedTodo.data).toEqual({
-    //       ...newTodo.data,
-    //       completed: true,
-    //     });
-    //   });
-    // });
+         expect(updatedTodo.data).toEqual({
+           text: "fakeText1",
+           completed: true,
+           id: "1"
+         });
+       });
+     });
 
     // describe.skip("DELETE", () => {
     //   it("Should delete the todo with the given id", async () => {

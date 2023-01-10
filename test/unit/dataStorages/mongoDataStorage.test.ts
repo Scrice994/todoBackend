@@ -39,7 +39,14 @@ describe("unit", () => {
             expect(findNewTodo).toEqual([newTodo])
         })
       });
-      describe.skip("findAndUpdate()", () => {});
+      describe("findAndUpdate()", () => {
+        it("should do the updated of the founded object", async () => {
+            const newTodo = await testMongoDataStorage.create(testTodo)
+            const updateTodo = await testMongoDataStorage.update(newTodo.id, true)
+            console.log(updateTodo)
+            expect(updateTodo).toEqual({...newTodo, completed: true})
+        })
+      });
       describe.skip("findAndDelete()", () => {});
     });
   });

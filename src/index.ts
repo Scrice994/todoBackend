@@ -35,15 +35,14 @@ app.post("/todo", async (req, res) => {
   res.status(200).json(insertNewTodo);
 })
 
-// app.put("/todo/:id", async (req, res) => {
-//   const { id } = req.params;
-//   const { completed } = req.body
-//   const newValue = completed
- 
-//   const updatedTodo = await new TodoCRUD(repository).update(id, newValue);
+app.put("/todo/:id", async (req, res) => {
+  const { id } = req.params;
+  const { completed } = req.body
+  const newValue = completed
 
-//   res.status(200).json({text: updatedTodo.text, completed: updatedTodo.completed, id: updatedTodo.id});
-// });
+  const updatedTodo = await new TodoCRUD(repository).update(id, newValue);
+  res.status(200).json(updatedTodo);
+});
 
 // app.delete("/todo/:id", async (req, res) => {
 //   const { id } = req.params;

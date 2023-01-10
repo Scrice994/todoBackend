@@ -29,9 +29,12 @@ export class MongoDataStorage<T> implements IDataStorage<T> {
     return result;
   }
 
-//   async update(): Promise<MongooseEntity<T> | null> {
-//     return this._model.findOneAndDelete();
-//   }
+  async update(id: string | number, newValue: boolean): Promise<TodoEntity | null> {
+    const updatedTodo = await this._model.findOneAndUpdate({id: id}, {completed: newValue}, {new: true});
+    const mongoUpdatedTodo = await Promise.resolve(updatedTodo)
+    const { _id, __v, ...result } = mongoUpdatedTodo.toObject()
+    return result;
+  }
 
 //   async delete(): Promise<MongooseEntity<T> | null> {
 //     return this._model.findOneAndUpdate();

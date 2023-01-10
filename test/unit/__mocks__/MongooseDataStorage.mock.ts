@@ -11,4 +11,8 @@ export class MongooseDataStorageMock<T> implements IDataStorage<T> {
     create = jest.fn((newTodo: string) => {
         return Promise.resolve<TodoEntity>({text: newTodo, completed: false, id: 'mockId'})
     })
+
+    update(id: string | number, newValue: any): Promise<any> {
+        return Promise.resolve({text: "mockText", id: id, completed: newValue})
+    }
 }

@@ -15,9 +15,9 @@ export class TodoCRUD implements ICRUD {
     create(newTodo: string): any {
         return this.repository.insertOne(newTodo);
     }
-    // update(id: string | number, newValue: Partial<TodoEntity>): any{
-    //     return this.repository.updateOne(id, newValue)
-    // }
+    update(id: string | number, newValue: boolean): any{
+        return this.repository.updateOne(id, newValue)
+    }
     // delete(id: string | number): any {
     //     return this.repository.deleteOne(id)
     // }

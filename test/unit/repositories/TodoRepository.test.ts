@@ -43,9 +43,16 @@ describe("unit", () => {
       });
 
       describe("updateOne()", () => {
-        it.skip("Should update an existing TodoEntity", () => {});
+        it("Should update an existing TodoEntity", async () => {
+          const repository = new TodoRepository(mongooseDataStorageMock);
 
-        it.skip("Should create a new TodoEntity when the providede TodoEntity does not exist", () => {});
+          expect(await repository.updateOne("mockId", true))
+            .toEqual({
+              id: "mockId",
+              text: "mockText",
+              completed: true
+            })
+        });
       });
 
       describe("deleteOne()", () => {
