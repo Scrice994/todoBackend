@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-import { MongoTodoEntity } from "src/entities/MongoTodoEntity";
 import { TodoEntity } from "../entities/TodoEntity";
 import { IRepository } from "./IRepository";
 import { IDataStorage } from '../dataStorages/IDataStorage';
@@ -15,15 +13,15 @@ export class TodoRepository implements IRepository<TodoEntity>{
         return result
     }
 
-    async insertOne(newTodo: string): Promise<any> {
+    async insertOne(newTodo: string): Promise<TodoEntity> {
         return await this.dataStorage.create(newTodo)
     }
 
-    async updateOne(id: string | number, newValue: boolean): Promise<any | null> {
+    async updateOne(id: string | number, newValue: boolean): Promise<TodoEntity> {
         return await this.dataStorage.update(id, newValue)
     }
 
-    async deleteOne(id: string | number): Promise<any | null> {
+    async deleteOne(id: string | number): Promise<TodoEntity> {
         return await this.dataStorage.delete(id)
     }
 }

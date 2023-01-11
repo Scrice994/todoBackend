@@ -9,9 +9,9 @@ const cors = require('cors')
 
 
 const app = express();
-const port = 3005;
+const PORT = 3005;
 
-const repository = new TodoRepository(
+const REPOSITORY = new TodoRepository(
   new MongoDataStorage<TodoEntity>(Todo)
 );
 
@@ -23,7 +23,7 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/todo", async (req, res) => {
-  const todos = await new TodoCRUD(repository).read();
+  const todos = await new TodoCRUD(REPOSITORY).read();
 
   res.status(200).json(todos);
 });
@@ -31,7 +31,7 @@ app.get("/todo", async (req, res) => {
 app.post("/todo", async (req, res) => {
   const { text } = req.body
   console.log(text)
-  const insertNewTodo = await new TodoCRUD(repository).create(text)
+  const insertNewTodo = await new TodoCRUD(REPOSITORY).create(text)
   res.status(200).json(insertNewTodo);
 })
 
@@ -40,20 +40,20 @@ app.put("/todo/:id", async (req, res) => {
   const { completed } = req.body
   const newValue = completed
 
-  const updatedTodo = await new TodoCRUD(repository).update(id, newValue);
+  const updatedTodo = await new TodoCRUD(REPOSITORY).update(id, newValue);
   res.status(200).json(updatedTodo);
 });
 
 app.delete("/todo/:id", async (req, res) => {
   const { id } = req.params;
-  const deletedTodo = await new TodoCRUD(repository).delete(id)
+  const deletedTodo = await new TodoCRUD(REPOSITORY).delete(id)
 
   res.status(200).json(deletedTodo)
 });
 
 connectDatabase().then(
-  app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+  app.listen(PORT, () => {
+    console.log(`Example app listening on port ${PORT}`);
   })
 ).catch(err =>  console.error(err))
 
