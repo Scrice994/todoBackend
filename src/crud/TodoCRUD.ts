@@ -8,7 +8,7 @@ export class TodoCRUD implements ICRUD {
     ) {
     }
 
-    async read(): Promise<any> {
+    read(): Promise<any> {
         return this.repository.getAll();
         // todo read from a repository
     }
@@ -18,7 +18,7 @@ export class TodoCRUD implements ICRUD {
     update(id: string | number, newValue: boolean): any{
         return this.repository.updateOne(id, newValue)
     }
-    // delete(id: string | number): any {
-    //     return this.repository.deleteOne(id)
-    // }
+    delete(id: string | number): any {
+        return this.repository.deleteOne(id)
+    }
 }

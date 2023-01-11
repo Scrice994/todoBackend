@@ -56,7 +56,16 @@ describe("unit", () => {
       });
 
       describe("deleteOne()", () => {
-        it.skip("Should delete a given TodoEntity by id", () => {});
+        it("Should delete a given TodoEntity by id",async () => {
+          const repository = new TodoRepository(mongooseDataStorageMock)
+
+          expect(await repository.deleteOne("mockId"))
+            .toEqual({
+              id: "mockId",
+              text: "mockText",
+              completed: false
+            })
+        });
       });
     });
   });

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { expect, describe, it, beforeEach, jest } from "@jest/globals";
+import { expect, describe, it, beforeEach, afterAll } from "@jest/globals";
 import { clearDatabase, initDatabase} from "./utils/testUtils";
 const todoTest = { text: "TestoProva" };
 
@@ -19,6 +19,10 @@ describe("api", () => {
     await clearDatabase();
     await initDatabase(dbInit);
   });
+
+  afterAll(async () => {
+    await clearDatabase()
+  })
 
   describe("/todo", () => {
     const TODO_URL = "http://localhost:3005/todo";
@@ -62,22 +66,26 @@ describe("api", () => {
        });
      });
 
-    // describe.skip("DELETE", () => {
-    //   it("Should delete the todo with the given id", async () => {
-    //     const newTodo = await axios.post(
-    //       TODO_URL,
-    //       todoTest
-    //     );
+    describe("DELETE", () => {
+      it("Should delete the todo with the given id", async () => {
+        const deletedTodo = await axios.delete(
+          `${TODO_URL}/1`
+        );
 
-    //     const deletedTodo = await axios.delete(
-    //       `${TODO_URL}/${newTodo.data.id}`
-    //     );
+        const response = await axios.get(TODO_URL);
 
-    //     const response = await axios.get(TODO_URL);
+        expect(deletedTodo.data).toEqual({
+          id: "1",
+          text: 'fakeText1',
+          completed: false
+        });
 
-    //     expect(deletedTodo.data).toEqual(newTodo.data);
-    //     expect(response.data).toEqual([]);
-    //   });
-    // });
+        expect(response.data).toEqual([{
+          id: "2",
+          text: 'fakeText2',
+          completed: true
+        }]);
+      });
+    });
   });
 });

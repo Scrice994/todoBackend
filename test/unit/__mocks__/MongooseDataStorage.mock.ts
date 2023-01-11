@@ -12,7 +12,11 @@ export class MongooseDataStorageMock<T> implements IDataStorage<T> {
         return Promise.resolve<TodoEntity>({text: newTodo, completed: false, id: 'mockId'})
     })
 
-    update(id: string | number, newValue: any): Promise<any> {
+    update = (id: string | number, newValue: any): Promise<any> => {
         return Promise.resolve({text: "mockText", id: id, completed: newValue})
+    }
+
+    delete = (id: string | number): Promise<any> => {
+        return Promise.resolve({text: "mockText", id: id, completed: false})
     }
 }

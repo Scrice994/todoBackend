@@ -23,7 +23,7 @@ export class TodoRepository implements IRepository<TodoEntity>{
         return await this.dataStorage.update(id, newValue)
     }
 
-    // async deleteOne(id: string | number): Promise<any | null> {
-    //     return await this.dataStorage.findAndDelete({id: id})
-    // }
+    async deleteOne(id: string | number): Promise<any | null> {
+        return await this.dataStorage.delete(id)
+    }
 }

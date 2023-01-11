@@ -3,8 +3,8 @@ import { TodoEntity } from "src/entities/TodoEntity";
 import { IDataStorage } from "./IDataStorage";
 
 interface MongooseEntity{
-  _id: string
-  __v: number
+  _id: string;
+  __v: number;
 };
 
 export class MongoDataStorage<T> implements IDataStorage<T> {
@@ -25,18 +25,21 @@ export class MongoDataStorage<T> implements IDataStorage<T> {
   async create(newTodo: string): Promise<TodoEntity> {
     const createNewTodo = await this._model.create({text: newTodo});
     const mongoNewTodo = await Promise.resolve((createNewTodo));
-    const { _id, __v, ...result} = mongoNewTodo.toObject()
+    const { _id, __v, ...result} = mongoNewTodo.toObject();
     return result;
   }
 
   async update(id: string | number, newValue: boolean): Promise<TodoEntity | null> {
     const updatedTodo = await this._model.findOneAndUpdate({id: id}, {completed: newValue}, {new: true});
-    const mongoUpdatedTodo = await Promise.resolve(updatedTodo)
-    const { _id, __v, ...result } = mongoUpdatedTodo.toObject()
+    const mongoUpdatedTodo = await Promise.resolve(updatedTodo);
+    const { _id, __v, ...result } = mongoUpdatedTodo.toObject();
     return result;
   }
 
-//   async delete(): Promise<MongooseEntity<T> | null> {
-//     return this._model.findOneAndUpdate();
-//   }
+  async delete(id: string | number): Promise<TodoEntity | null> {
+    const deletedTodo = await this._model.findOneAndDelete({id: id});
+    const mongoDeletedTodo = await Promise.resolve(deletedTodo);
+    const { _id, __v, ...result } = mongoDeletedTodo.toObject();
+    return result;
+  }
 }

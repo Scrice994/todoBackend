@@ -44,12 +44,12 @@ app.put("/todo/:id", async (req, res) => {
   res.status(200).json(updatedTodo);
 });
 
-// app.delete("/todo/:id", async (req, res) => {
-//   const { id } = req.params;
-//   const deletedTodo = await new TodoCRUD(repository).delete(id)
+app.delete("/todo/:id", async (req, res) => {
+  const { id } = req.params;
+  const deletedTodo = await new TodoCRUD(repository).delete(id)
 
-//   res.status(200).json({text: deletedTodo.text, completed: deletedTodo.completed, id: deletedTodo.id})
-// });
+  res.status(200).json(deletedTodo)
+});
 
 connectDatabase().then(
   app.listen(port, () => {

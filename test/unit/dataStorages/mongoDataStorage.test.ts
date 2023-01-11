@@ -43,11 +43,20 @@ describe("unit", () => {
         it("should do the updated of the founded object", async () => {
             const newTodo = await testMongoDataStorage.create(testTodo)
             const updateTodo = await testMongoDataStorage.update(newTodo.id, true)
-            console.log(updateTodo)
+            
             expect(updateTodo).toEqual({...newTodo, completed: true})
         })
       });
-      describe.skip("findAndDelete()", () => {});
+      describe("findAndDelete()", () => {
+        it("should return the removed element and the collection must be empty", async () => {
+           const newTodo = await testMongoDataStorage.create(testTodo)
+           const deletedTodo = await testMongoDataStorage.delete(newTodo.id)
+           const todoArray = await testMongoDataStorage.find()
+           
+           expect(deletedTodo).toEqual(newTodo)
+           expect(todoArray).toEqual([])
+        })
+      });
     });
   });
 });
