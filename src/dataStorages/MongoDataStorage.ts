@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import { TodoEntity } from "src/entities/TodoEntity";
-import { IDataStorage } from "./IDataStorage";
+import { IEntity } from "src/entities/IEntity";
+import { DataStorageId, IDataStorage } from "./IDataStorage";
 
-export class MongoDataStorage<T> implements IDataStorage<T> {
+export class MongoDataStorage<T extends IEntity> implements IDataStorage<T> {
   constructor(private _model: mongoose.Model<any>) {
   }
 
@@ -15,24 +15,28 @@ export class MongoDataStorage<T> implements IDataStorage<T> {
       });
   }
 
-  async create(newTodo: string): Promise<TodoEntity> {
-    const createNewTodo = await this._model.create({text: newTodo});
-    const mongoNewTodo = await Promise.resolve((createNewTodo));
-    const { _id, __v, ...result} = mongoNewTodo.toObject();
+  async create(newEntity: T): Promise<T & Required<IEntity>> {
+    const newEntityResult = await this._model.create(newEntity);
+
+    console.log('newEntityResult', newEntityResult);
+    // const mongoNewEntity = await Promise.resolve((newEntityResult));
+    const { _id, __v, ...result} = newEntityResult.toObject();
     return result;
   }
 
-  async update(id: string | number, newValue: boolean): Promise<TodoEntity> {
-    const updatedTodo = await this._model.findOneAndUpdate({id: id}, {completed: newValue}, {new: true});
-    const mongoUpdatedTodo = await Promise.resolve(updatedTodo);
-    const { _id, __v, ...result } = mongoUpdatedTodo.toObject();
+  async update(entity: Required<IEntity> & Partial<T>): Promise<T> {
+    const {id, ...toUpdate} = entity;
+
+    const updatedEntity = await this._model.findOneAndUpdate({id}, toUpdate, {new: true});
+    // const mongoUpdatedEntity = await Promise.resolve(updatedEntity);
+    const { _id, __v, ...result } = updatedEntity.toObject();
     return result;
   }
 
-  async delete(id: string | number): Promise<TodoEntity> {
-    const deletedTodo = await this._model.findOneAndDelete({id: id});
-    const mongoDeletedTodo = await Promise.resolve(deletedTodo);
-    const { _id, __v, ...result } = mongoDeletedTodo.toObject();
+  async delete(id: DataStorageId ): Promise<T> {
+    const deletedEntity = await this._model.findOneAndDelete({id});
+    // const mongoDeletedEntity = await Promise.resolve(deletedEntity);
+    const { _id, __v, ...result } = deletedEntity.toObject();
     return result;
   }
 }

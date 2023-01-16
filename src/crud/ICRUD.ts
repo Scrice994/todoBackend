@@ -1,6 +1,8 @@
+import { DataStorageId } from "src/dataStorages/IDataStorage";
+
 export interface ICRUD {
-    create(text: string): any;
-    read(): any;
-    update(id: string | number, newValue: boolean): any;
-    delete(id: string | number): any;
+    create(newObj: Object): Promise<Object>;
+    read(): Promise<Object[]>;
+    update(updateObj: Object): Promise<Object>;
+    delete(id: DataStorageId): Promise<Object>;
 }

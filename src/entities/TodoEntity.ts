@@ -1,5 +1,6 @@
-export interface TodoEntity {
-    text: string
-    completed: boolean
-    id: string
+import { IEntity } from "./IEntity";
+
+export interface TodoEntity extends IEntity {
+    text: string;
+    completed?: boolean;
 }

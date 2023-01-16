@@ -1,6 +1,7 @@
 import { TodoEntity } from "../entities/TodoEntity";
 import { IRepository } from "./IRepository";
-import { IDataStorage } from '../dataStorages/IDataStorage';
+import { DataStorageId, IDataStorage } from '../dataStorages/IDataStorage';
+import { IEntity } from "src/entities/IEntity";
 
 
 export class TodoRepository implements IRepository<TodoEntity>{
@@ -13,15 +14,15 @@ export class TodoRepository implements IRepository<TodoEntity>{
         return result
     }
 
-    async insertOne(newTodo: string): Promise<TodoEntity> {
+    async insertOne(newTodo: TodoEntity): Promise<TodoEntity> {
         return await this.dataStorage.create(newTodo)
     }
 
-    async updateOne(id: string | number, newValue: boolean): Promise<TodoEntity> {
-        return await this.dataStorage.update(id, newValue)
+    async updateOne(updateTodo: Required<IEntity> & Partial<TodoRepository>): Promise<TodoEntity> {
+        return await this.dataStorage.update(updateTodo)
     }
 
-    async deleteOne(id: string | number): Promise<TodoEntity> {
+    async deleteOne(id: DataStorageId ): Promise<TodoEntity> {
         return await this.dataStorage.delete(id)
     }
 }

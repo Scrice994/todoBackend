@@ -38,9 +38,10 @@ app.post("/todo", async (req, res) => {
 app.put("/todo/:id", async (req, res) => {
   const { id } = req.params;
   const { completed } = req.body
-  const newValue = completed
+  
+  const newValue = {id, completed}
 
-  const updatedTodo = await new TodoCRUD(REPOSITORY).update(id, newValue);
+  const updatedTodo = await new TodoCRUD(REPOSITORY).update(newValue);
   res.status(200).json(updatedTodo);
 });
 

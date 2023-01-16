@@ -1,6 +1,5 @@
 import { jest } from "@jest/globals";
-import { IDataStorage } from "../../../src/dataStorages/IDataStorage";
-import { TodoEntity } from "../../../src/entities/TodoEntity";
+import { DataStorageId, IDataStorage } from "../../../src/dataStorages/IDataStorage";
 
 export class MongooseDataStorageMock<T> implements IDataStorage<T> {
     find = jest.fn(() => {
@@ -8,15 +7,16 @@ export class MongooseDataStorageMock<T> implements IDataStorage<T> {
         return Promise.resolve<T[]>([])
     })
 
-    create = jest.fn((newTodo: string) => {
-        return Promise.resolve<TodoEntity>({text: newTodo, completed: false, id: 'mockId'})
+    
+    create = jest.fn(async (newEntity: T) => {
+        return Promise.resolve<T>(newEntity)
     })
 
-    update = (id: string | number, newValue: any): Promise<any> => {
-        return Promise.resolve({text: "mockText", id: id, completed: newValue})
-    }
+    update = jest.fn(async (newEntity: T): Promise<any> => {
+        return Promise.resolve(newEntity)
+    })
 
-    delete = (id: string | number): Promise<any> => {
-        return Promise.resolve({text: "mockText", id: id, completed: false})
+    delete = (id: DataStorageId): Promise<any> => {
+        return Promise.resolve({id})
     }
 }
