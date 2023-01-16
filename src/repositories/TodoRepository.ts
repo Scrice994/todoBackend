@@ -14,15 +14,16 @@ export class TodoRepository implements IRepository<TodoEntity>{
         return result
     }
 
-    async insertOne(newTodo: TodoEntity): Promise<TodoEntity> {
+    async insertOne(newTodo: TodoEntity): Promise<Required<TodoEntity>> {
+        //Error Handling da fare quando il newTodo è vuoto
         return await this.dataStorage.create(newTodo)
     }
 
-    async updateOne(updateTodo: Required<IEntity> & Partial<TodoRepository>): Promise<TodoEntity> {
+    async updateOne(updateTodo: Required<IEntity> & Partial<TodoEntity>): Promise<Required<TodoEntity>> {
         return await this.dataStorage.update(updateTodo)
     }
 
-    async deleteOne(id: DataStorageId ): Promise<TodoEntity> {
+    async deleteOne(id: DataStorageId ): Promise<Required<TodoEntity>> {
         return await this.dataStorage.delete(id)
     }
 }

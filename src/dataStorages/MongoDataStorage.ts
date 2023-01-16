@@ -15,7 +15,7 @@ export class MongoDataStorage<T extends IEntity> implements IDataStorage<T> {
       });
   }
 
-  async create(newEntity: T): Promise<T & Required<IEntity>> {
+  async create(newEntity: T): Promise<Required<T>> {
     const newEntityResult = await this._model.create(newEntity);
 
     console.log('newEntityResult', newEntityResult);
@@ -24,18 +24,16 @@ export class MongoDataStorage<T extends IEntity> implements IDataStorage<T> {
     return result;
   }
 
-  async update(entity: Required<IEntity> & Partial<T>): Promise<T> {
+  async update(entity: Required<IEntity> & Partial<T>): Promise<Required<T>> {
     const {id, ...toUpdate} = entity;
 
     const updatedEntity = await this._model.findOneAndUpdate({id}, toUpdate, {new: true});
-    // const mongoUpdatedEntity = await Promise.resolve(updatedEntity);
     const { _id, __v, ...result } = updatedEntity.toObject();
     return result;
   }
 
-  async delete(id: DataStorageId ): Promise<T> {
+  async delete(id: DataStorageId ): Promise<Required<T>> {
     const deletedEntity = await this._model.findOneAndDelete({id});
-    // const mongoDeletedEntity = await Promise.resolve(deletedEntity);
     const { _id, __v, ...result } = deletedEntity.toObject();
     return result;
   }

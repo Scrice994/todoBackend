@@ -30,12 +30,18 @@ describe("unit", () => {
 
       describe("insertOne()", () => {
         it("Should create a new TodoEntity object", async () => {
+          mongooseDataStorageMock.create.mockImplementationOnce(() => Promise.resolve({
+            id: 'mockId',
+            text: 'mockText',
+            completed: false
+          }))
+
           const repository = new TodoRepository(mongooseDataStorageMock);
 
-          expect(await repository.insertOne('mockTextProva'))
+          expect(await repository.insertOne({text: 'mockText'}))
             .toEqual({
               id: 'mockId',
-              text: 'mockTextProva',
+              text: 'mockText',
               completed: false
             })
 
@@ -44,9 +50,15 @@ describe("unit", () => {
 
       describe("updateOne()", () => {
         it("Should update an existing TodoEntity", async () => {
+          mongooseDataStorageMock.update.mockImplementationOnce(() => Promise.resolve({
+            id: 'mockId',
+            text: 'mockText',
+            completed: true
+          }))
+
           const repository = new TodoRepository(mongooseDataStorageMock);
 
-          expect(await repository.updateOne("mockId", true))
+          expect(await repository.updateOne({id: "mockId", completed: true}))
             .toEqual({
               id: "mockId",
               text: "mockText",
@@ -57,6 +69,12 @@ describe("unit", () => {
 
       describe("deleteOne()", () => {
         it("Should delete a given TodoEntity by id",async () => {
+          mongooseDataStorageMock.delete.mockImplementationOnce(() => Promise.resolve({
+            id: 'mockId',
+            text: 'mockText',
+            completed: false
+        }))
+
           const repository = new TodoRepository(mongooseDataStorageMock)
 
           expect(await repository.deleteOne("mockId"))
