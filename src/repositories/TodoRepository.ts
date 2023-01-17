@@ -8,7 +8,7 @@ export class TodoRepository implements IRepository<TodoEntity>{
 
     constructor(private dataStorage: IDataStorage<TodoEntity>) {}
 
-    async getAll(): Promise<TodoEntity[]> {
+    async getAll(): Promise<Required<TodoEntity[]>> {
         const result = await this.dataStorage.find()
         console.log(result)
         return result

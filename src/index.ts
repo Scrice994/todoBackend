@@ -30,8 +30,7 @@ app.get("/todo", async (req, res) => {
 
 app.post("/todo", async (req, res) => {
   const { text } = req.body
-  console.log(text)
-  const insertNewTodo = await new TodoCRUD(REPOSITORY).create(text)
+  const insertNewTodo = await new TodoCRUD(REPOSITORY).create({text})
   res.status(200).json(insertNewTodo);
 })
 

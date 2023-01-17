@@ -10,17 +10,17 @@ export class TodoCRUD implements ICRUD {
     ) {
     }
 
-    read(): Promise<TodoEntity []> {
+    read(): Promise<Required<TodoEntity[]>> {
         return this.repository.getAll();
         // todo read from a repository
     }
-    create(newObj: TodoEntity): Promise<TodoEntity> {
-        return this.repository.insertOne(newObj);
+    create(newTodo: TodoEntity): Promise<Required<TodoEntity>> {
+        return this.repository.insertOne(newTodo);
     }
-    update(updateObj: Required<IEntity> & Partial<TodoEntity>): Promise<TodoEntity>{
-        return this.repository.updateOne(updateObj)
+    update(updateTodo: Required<IEntity> & Partial<TodoEntity>): Promise<Required<TodoEntity>>{
+        return this.repository.updateOne(updateTodo)
     }
-    delete(id: DataStorageId): Promise<TodoEntity> {
+    delete(id: DataStorageId): Promise<Required<TodoEntity>> {
         return this.repository.deleteOne(id)
     }
 }

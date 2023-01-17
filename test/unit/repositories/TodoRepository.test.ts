@@ -1,88 +1,53 @@
 import { TodoRepository } from "../../../src/repositories/TodoRepository";
 import { MongooseDataStorageMock } from "../__mocks__/MongooseDataStorage.mock";
 import { TodoEntity } from "../../../src/entities/TodoEntity";
-import { describe, it, jest, expect } from "@jest/globals";
+import { describe, it, expect } from "@jest/globals";
 
 describe("unit", () => {
   describe("repositories", () => {
     describe("TodoRepository", () => {
       const mongooseDataStorageMock = new MongooseDataStorageMock<TodoEntity>();
-
+      const repository = new TodoRepository(mongooseDataStorageMock);
+      const fakeResponse = {
+        id: 'mockId',
+        text: 'mockText',
+        completed: false
+      }
+      const fakeResponseUpdate = {
+        id: 'mockId',
+        text: 'mockText',
+        completed: true
+      }
 
       describe("getAll()", () => {
         it("Should return all TodoEntity objects in the data storage", async () => {
-            mongooseDataStorageMock.find.mockImplementationOnce(() => Promise.resolve([{
-                id: 'mockId',
-                text: 'mockText',
-                completed: false
-            }]))
+            mongooseDataStorageMock.find.mockImplementationOnce(() => Promise.resolve([fakeResponse]))
 
-          const repository = new TodoRepository(mongooseDataStorageMock);
-
-          expect(await repository.getAll())
-            .toEqual([{
-                id: 'mockId',
-                text: 'mockText',
-                completed: false
-            }])
+          expect(await repository.getAll()).toEqual([fakeResponse])
         });
       });
 
       describe("insertOne()", () => {
         it("Should create a new TodoEntity object", async () => {
-          mongooseDataStorageMock.create.mockImplementationOnce(() => Promise.resolve({
-            id: 'mockId',
-            text: 'mockText',
-            completed: false
-          }))
+          mongooseDataStorageMock.create.mockImplementationOnce(() => Promise.resolve(fakeResponse))
 
-          const repository = new TodoRepository(mongooseDataStorageMock);
-
-          expect(await repository.insertOne({text: 'mockText'}))
-            .toEqual({
-              id: 'mockId',
-              text: 'mockText',
-              completed: false
-            })
-
+          expect(await repository.insertOne({text: 'mockText'})).toEqual(fakeResponse)
         });
       });
 
       describe("updateOne()", () => {
         it("Should update an existing TodoEntity", async () => {
-          mongooseDataStorageMock.update.mockImplementationOnce(() => Promise.resolve({
-            id: 'mockId',
-            text: 'mockText',
-            completed: true
-          }))
+          mongooseDataStorageMock.update.mockImplementationOnce(() => Promise.resolve(fakeResponseUpdate))
 
-          const repository = new TodoRepository(mongooseDataStorageMock);
-
-          expect(await repository.updateOne({id: "mockId", completed: true}))
-            .toEqual({
-              id: "mockId",
-              text: "mockText",
-              completed: true
-            })
+          expect(await repository.updateOne({id: "mockId", completed: true})).toEqual(fakeResponseUpdate)
         });
       });
 
       describe("deleteOne()", () => {
         it("Should delete a given TodoEntity by id",async () => {
-          mongooseDataStorageMock.delete.mockImplementationOnce(() => Promise.resolve({
-            id: 'mockId',
-            text: 'mockText',
-            completed: false
-        }))
+          mongooseDataStorageMock.delete.mockImplementationOnce(() => Promise.resolve(fakeResponse))
 
-          const repository = new TodoRepository(mongooseDataStorageMock)
-
-          expect(await repository.deleteOne("mockId"))
-            .toEqual({
-              id: "mockId",
-              text: "mockText",
-              completed: false
-            })
+          expect(await repository.deleteOne("mockId")).toEqual(fakeResponse)
         });
       });
     });

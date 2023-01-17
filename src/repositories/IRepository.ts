@@ -1,9 +1,9 @@
 import { DataStorageId } from "src/dataStorages/IDataStorage";
-import { TodoEntity } from "src/entities/TodoEntity";
+import { IEntity } from "src/entities/IEntity";
 
 export interface IRepository<T> {
-    getAll(): Promise<TodoEntity []>;
-    insertOne(newTodo: TodoEntity): Promise<Required<TodoEntity>>;
-    updateOne(updateTodo: Partial<TodoEntity>): Promise<Required<TodoEntity>>;
-    deleteOne(id: DataStorageId ): Promise<Required<TodoEntity>>;
+    getAll(): Promise<Required<T[]>>;
+    insertOne(newEntity: T): Promise<Required<T>>;
+    updateOne(updateEntity: Required<IEntity> & Partial<T>): Promise<Required<T>>;
+    deleteOne(id: DataStorageId ): Promise<Required<T>>;
 }

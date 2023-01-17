@@ -6,7 +6,7 @@ export class MongoDataStorage<T extends IEntity> implements IDataStorage<T> {
   constructor(private _model: mongoose.Model<any>) {
   }
 
-  async find(): Promise<T[]> {
+  async find(): Promise<Required<T[]>> {
     return (await this._model.find())
       .map(mongooseRecord => {
         const {__v, _id, ...result} = mongooseRecord.toObject();
