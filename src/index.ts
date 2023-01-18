@@ -46,7 +46,7 @@ app.put("/todo/:id", async (req, res) => {
 
 app.delete("/todo/:id", async (req, res) => {
   const { id } = req.params;
-  const deletedTodo = await new TodoCRUD(REPOSITORY).delete(id)
+  const deletedTodo = await new TodoCRUD(REPOSITORY).delete({id})
 
   res.status(200).json(deletedTodo)
 });

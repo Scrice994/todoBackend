@@ -10,7 +10,6 @@ export class TodoRepository implements IRepository<TodoEntity>{
 
     async getAll(): Promise<Required<TodoEntity[]>> {
         const result = await this.dataStorage.find()
-        console.log(result)
         return result
     }
 
@@ -24,6 +23,9 @@ export class TodoRepository implements IRepository<TodoEntity>{
     }
 
     async deleteOne(id: Required<IEntity> ): Promise<Required<TodoEntity>> {
-        return await this.dataStorage.delete(id)
+        console.log(id)
+        const result = await this.dataStorage.delete(id)
+        console.log(result)
+        return result
     }
 }

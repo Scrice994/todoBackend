@@ -69,21 +69,21 @@ describe("api", () => {
     describe("DELETE", () => {
       it("Should delete the todo with the given id", async () => {
         const deletedTodo = await axios.delete(
-          `${TODO_URL}/1`
+          `${TODO_URL}/2`
         );
 
         const response = await axios.get(TODO_URL);
 
         expect(deletedTodo.data).toEqual({
-          id: "1",
-          text: 'fakeText1',
-          completed: false
-        });
-
-        expect(response.data).toEqual([{
           id: "2",
           text: 'fakeText2',
           completed: true
+        });
+
+        expect(response.data).toEqual([{
+          id: "1",
+          text: 'fakeText1',
+          completed: false
         }]);
       });
     });

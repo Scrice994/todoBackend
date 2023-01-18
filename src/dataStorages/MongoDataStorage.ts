@@ -17,8 +17,6 @@ export class MongoDataStorage<T extends IEntity> implements IDataStorage<T> {
 
   async create(newEntity: T): Promise<Required<T>> {
     const newEntityResult = await this._model.create(newEntity);
-
-    console.log('newEntityResult', newEntityResult);
     // const mongoNewEntity = await Promise.resolve((newEntityResult));
     const { _id, __v, ...result} = newEntityResult.toObject();
     return result;
