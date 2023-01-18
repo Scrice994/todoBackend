@@ -1,10 +1,9 @@
 import { IRepository } from "src/repositories/IRepository";
 import { ICRUD } from "./ICRUD";
 import { TodoEntity } from "src/entities/TodoEntity";
-import { DataStorageId } from "src/dataStorages/IDataStorage";
 import { IEntity } from "src/entities/IEntity";
 
-export class TodoCRUD implements ICRUD {
+export class TodoCRUD implements ICRUD<TodoEntity> {
     constructor(
         private repository: IRepository<TodoEntity>
     ) {
@@ -20,7 +19,7 @@ export class TodoCRUD implements ICRUD {
     update(updateTodo: Required<IEntity> & Partial<TodoEntity>): Promise<Required<TodoEntity>>{
         return this.repository.updateOne(updateTodo)
     }
-    delete(id: DataStorageId): Promise<Required<TodoEntity>> {
+    delete(id: Required<IEntity>): Promise<Required<TodoEntity>> {
         return this.repository.deleteOne(id)
     }
 }

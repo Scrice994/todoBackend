@@ -1,7 +1,8 @@
+import { IEntity } from "src/entities/IEntity";
 
-export interface ICRUD {
-    read(): Promise<any>;
-    create(newEllement: any): Promise<any>;
-    update(updateElement: any): Promise<any>;
-    delete(id: any): Promise<any>;
+export interface ICRUD<T extends IEntity>{
+    read(): Promise<Required<T[]>>;
+    create(newEllement: T): Promise<Required<T>>;
+    update(updateElement: Required<IEntity> & Partial<T>): Promise<Required<T>>;
+    delete(id: Required<IEntity>): Promise<Required<T>>;
 }

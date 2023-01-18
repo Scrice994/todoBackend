@@ -47,7 +47,7 @@ describe("unit", () => {
                 it("should return the deleted element from the repository", async () => {
                     TodoRepositoryMock.deleteOne.mockImplementationOnce(() => Promise.resolve(fakeResponse))
 
-                    expect(await CRUD.delete("mockId")).toEqual(fakeResponse)
+                    expect(await CRUD.delete({id: "mockId"})).toEqual(fakeResponse)
                 })
             })
         });

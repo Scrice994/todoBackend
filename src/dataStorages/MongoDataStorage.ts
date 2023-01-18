@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { IEntity } from "src/entities/IEntity";
-import { DataStorageId, IDataStorage } from "./IDataStorage";
+import { IDataStorage } from "./IDataStorage";
 
 export class MongoDataStorage<T extends IEntity> implements IDataStorage<T> {
   constructor(private _model: mongoose.Model<any>) {
@@ -32,8 +32,8 @@ export class MongoDataStorage<T extends IEntity> implements IDataStorage<T> {
     return result;
   }
 
-  async delete(id: DataStorageId ): Promise<Required<T>> {
-    const deletedEntity = await this._model.findOneAndDelete({id});
+  async delete(id: Required<IEntity> ): Promise<Required<T>> {
+    const deletedEntity = await this._model.findOneAndDelete(id);
     const { _id, __v, ...result } = deletedEntity.toObject();
     return result;
   }

@@ -1,8 +1,8 @@
 import { jest } from "@jest/globals";
-import { DataStorageId, IDataStorage } from "../../../src/dataStorages/IDataStorage";
+import { IDataStorage } from "../../../src/dataStorages/IDataStorage";
 import { IEntity } from "../../../src/entities/IEntity";
 
-export class MongooseDataStorageMock<T> implements IDataStorage<T> {
+export class MongooseDataStorageMock<T extends IEntity> implements IDataStorage<T> {
     find = jest.fn(async () => {
         return Promise.resolve<Required<T[]>>([])
     })
@@ -16,7 +16,7 @@ export class MongooseDataStorageMock<T> implements IDataStorage<T> {
         return Promise.resolve<Required<T>>(newEntity as Required<T>)
     })
 
-    delete = jest.fn(async (id: DataStorageId): Promise<Required<T>> => {
+    delete = jest.fn(async (id: Required<IEntity>): Promise<Required<T>> => {
         return Promise.resolve<Required<T>>(id as unknown as Required<T>)
     })
 }

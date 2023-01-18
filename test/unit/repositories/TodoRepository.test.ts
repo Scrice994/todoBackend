@@ -47,7 +47,7 @@ describe("unit", () => {
         it("Should delete a given TodoEntity by id",async () => {
           mongooseDataStorageMock.delete.mockImplementationOnce(() => Promise.resolve(fakeResponse))
 
-          expect(await repository.deleteOne("mockId")).toEqual(fakeResponse)
+          expect(await repository.deleteOne({id: "mockId"})).toEqual(fakeResponse)
         });
       });
     });

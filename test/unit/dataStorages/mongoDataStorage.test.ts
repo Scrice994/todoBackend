@@ -51,7 +51,8 @@ describe("unit", () => {
       describe("findAndDelete()", () => {
         it("should return the removed element and the collection must be empty", async () => {
           const newTodo = await testMongoDataStorage.create(testTodo)
-          const deletedTodo = await testMongoDataStorage.delete(newTodo.id)
+          const newTodoId = newTodo.id
+          const deletedTodo = await testMongoDataStorage.delete({id: newTodoId})
           const todoArray = await testMongoDataStorage.find()
             
           expect(deletedTodo).toEqual(newTodo)
