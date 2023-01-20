@@ -13,7 +13,7 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
         return this.repository.getAll();
         // todo read from a repository
     }
-    create(newTodo: TodoEntity): Promise<Required<TodoEntity>> {
+    create(newTodo: TodoEntity): Promise<Required<TodoEntity> | Error> {
         return this.repository.insertOne(newTodo);
     }
     update(updateTodo: Required<IEntity> & Partial<TodoEntity>): Promise<Required<TodoEntity>>{

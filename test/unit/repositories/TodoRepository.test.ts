@@ -21,7 +21,7 @@ describe("unit", () => {
 
       describe("getAll()", () => {
         it("Should return all TodoEntity objects in the data storage", async () => {
-            mongooseDataStorageMock.find.mockImplementationOnce(() => Promise.resolve([fakeResponse]))
+          mongooseDataStorageMock.find.mockImplementationOnce(() => Promise.resolve([fakeResponse]))
 
           expect(await repository.getAll()).toEqual([fakeResponse])
         });
@@ -33,6 +33,11 @@ describe("unit", () => {
 
           expect(await repository.insertOne({text: 'mockText'})).toEqual(fakeResponse)
         });
+
+        it("Should throw and Error when try to create a TodoEntity object with a empty text",async () => {
+
+          await expect(repository.insertOne({text: ""})).rejects.toThrow("Todo text can't be empty")
+        })
       });
 
       describe("updateOne()", () => {

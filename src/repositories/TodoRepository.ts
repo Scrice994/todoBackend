@@ -13,9 +13,20 @@ export class TodoRepository implements IRepository<TodoEntity>{
         return result
     }
 
-    async insertOne(newTodo: TodoEntity): Promise<Required<TodoEntity>> {
-        //Error Handling da fare quando il newTodo è vuoto
-        return await this.dataStorage.create(newTodo)
+    async insertOne(newTodo: TodoEntity): Promise<Required<TodoEntity> | Error> {
+        try{
+            if (newTodo.text != ""){
+                const result = await this.dataStorage.create(newTodo)
+                return result
+            } else {
+                throw new Error("Todo text can't be empty")
+            }
+        } catch(error) {
+            if(error instanceof Error){
+                console.log(error.message)
+            }
+            throw new Error("Todo text can't be empty")
+        }
     }
 
     async updateOne(updateTodo: Required<IEntity> & Partial<TodoEntity>): Promise<Required<TodoEntity>> {
@@ -23,9 +34,7 @@ export class TodoRepository implements IRepository<TodoEntity>{
     }
 
     async deleteOne(id: Required<IEntity> ): Promise<Required<TodoEntity>> {
-        console.log(id)
         const result = await this.dataStorage.delete(id)
-        console.log(result)
         return result
     }
 }
