@@ -6,7 +6,7 @@ import { MongoDataStorage } from "../../../src/dataStorages/MongoDataStorage"
 
 describe("unit", () => {
   describe.only("dataStorages", () => {
-    const testTodo: TodoEntity = {text: "testText"}
+    const testTodo: Omit<TodoEntity, 'id'> = {text: "testText"}
     const testMongoDataStorage = new MongoDataStorage<TodoEntity>(Todo)
 
     beforeAll( async () => {
@@ -43,7 +43,7 @@ describe("unit", () => {
       describe("findAndUpdate()", () => {
         it("should do the update of the given object if found", async () => {
             const newTodo = await testMongoDataStorage.create(testTodo);
-            const updateTodo = await testMongoDataStorage.update({id: newTodo.id, completed: true})
+            const updateTodo = await testMongoDataStorage.update({id: newTodo.id!, completed: true})
 
             expect(updateTodo).toEqual({...newTodo, completed: true})
         })
@@ -52,7 +52,7 @@ describe("unit", () => {
         it("should return the removed element and the collection must be empty", async () => {
           const newTodo = await testMongoDataStorage.create(testTodo)
           const newTodoId = newTodo.id
-          const deletedTodo = await testMongoDataStorage.delete({id: newTodoId})
+          const deletedTodo = await testMongoDataStorage.delete(newTodoId!)
           const todoArray = await testMongoDataStorage.find()
             
           expect(deletedTodo).toEqual(newTodo)

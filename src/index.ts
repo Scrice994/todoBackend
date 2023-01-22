@@ -25,13 +25,14 @@ app.get("/", async (req, res) => {
 app.get("/todo", async (req, res) => {
   const todos = await new TodoCRUD(REPOSITORY).read();
 
-  res.status(200).json(todos);
+  res.status(todos.statusCode).json(todos.data);
 });
 
 app.post("/todo", async (req, res) => {
   const { text } = req.body
   const insertNewTodo = await new TodoCRUD(REPOSITORY).create({text})
-  res.status(200).json(insertNewTodo);
+
+  res.status(insertNewTodo.statusCode).json(insertNewTodo.data);
 })
 
 app.put("/todo/:id", async (req, res) => {
@@ -41,14 +42,15 @@ app.put("/todo/:id", async (req, res) => {
   const newValue = {id, completed}
 
   const updatedTodo = await new TodoCRUD(REPOSITORY).update(newValue);
-  res.status(200).json(updatedTodo);
+
+  res.status(updatedTodo.statusCode).json(updatedTodo.data);
 });
 
 app.delete("/todo/:id", async (req, res) => {
   const { id } = req.params;
-  const deletedTodo = await new TodoCRUD(REPOSITORY).delete({id})
+  const deletedTodo = await new TodoCRUD(REPOSITORY).delete(id)
 
-  res.status(200).json(deletedTodo)
+  res.status(deletedTodo.statusCode).json(deletedTodo.data)
 });
 
 connectDatabase().then(

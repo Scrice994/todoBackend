@@ -13,27 +13,18 @@ export class TodoRepository implements IRepository<TodoEntity>{
         return result
     }
 
-    async insertOne(newTodo: TodoEntity): Promise<Required<TodoEntity> | Error> {
-        try{
-            if (newTodo.text != ""){
-                const result = await this.dataStorage.create(newTodo)
-                return result
-            } else {
-                throw new Error("Todo text can't be empty")
-            }
-        } catch(error) {
-            if(error instanceof Error){
-                console.log(error.message)
-            }
-            throw new Error("Todo text can't be empty")
-        }
+    async insertOne(newTodo: Omit<TodoEntity, 'id'>): Promise<TodoEntity> {
+        const result = await this.dataStorage.create(newTodo)
+        return result
+
     }
 
-    async updateOne(updateTodo: Required<IEntity> & Partial<TodoEntity>): Promise<Required<TodoEntity>> {
-        return await this.dataStorage.update(updateTodo)
+    async updateOne(updateTodo: Required<IEntity> & Partial<TodoEntity>): Promise<TodoEntity> {
+        const result =  await this.dataStorage.update(updateTodo)
+        return result
     }
 
-    async deleteOne(id: Required<IEntity> ): Promise<Required<TodoEntity>> {
+    async deleteOne(id: DataStorageId ): Promise<TodoEntity> {
         const result = await this.dataStorage.delete(id)
         return result
     }

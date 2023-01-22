@@ -30,8 +30,7 @@ describe("api", () => {
     describe("GET", () => {
       it("Should get all todos in storage", async () => {
         const response = await axios.get(TODO_URL);
-
-        expect(response.data).toEqual(dbInit);
+        expect(response.data).toEqual({response: dbInit});
       });
     });
 
@@ -41,11 +40,14 @@ describe("api", () => {
            TODO_URL,
            todoTest
          )
+         console.log(response.data)
 
          expect(response.data).toEqual({
-           id: response.data.id,
+          response: {
+           id: response.data.response.id,
            text: 'TestoProva',
            completed: false
+          }
          });
        });
      });
@@ -59,9 +61,10 @@ describe("api", () => {
          );
 
          expect(updatedTodo.data).toEqual({
-           text: "fakeText1",
-           completed: true,
-           id: "1"
+          response: {
+            ...dbInit[0],
+            completed: true
+          }
          });
        });
      });
@@ -74,17 +77,9 @@ describe("api", () => {
 
         const response = await axios.get(TODO_URL);
 
-        expect(deletedTodo.data).toEqual({
-          id: "2",
-          text: 'fakeText2',
-          completed: true
-        });
+        expect(deletedTodo.data).toEqual({response: dbInit[1]});
 
-        expect(response.data).toEqual([{
-          id: "1",
-          text: 'fakeText1',
-          completed: false
-        }]);
+        expect(response.data).toEqual({response: [dbInit[0]]});
       });
     });
   });

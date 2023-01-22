@@ -33,11 +33,6 @@ describe("unit", () => {
 
           expect(await repository.insertOne({text: 'mockText'})).toEqual(fakeResponse)
         });
-
-        it("Should throw and Error when try to create a TodoEntity object with a empty text",async () => {
-
-          await expect(repository.insertOne({text: ""})).rejects.toThrow("Todo text can't be empty")
-        })
       });
 
       describe("updateOne()", () => {
@@ -52,7 +47,7 @@ describe("unit", () => {
         it("Should delete a given TodoEntity by id",async () => {
           mongooseDataStorageMock.delete.mockImplementationOnce(() => Promise.resolve(fakeResponse))
 
-          expect(await repository.deleteOne({id: "mockId"})).toEqual(fakeResponse)
+          expect(await repository.deleteOne("mockId")).toEqual(fakeResponse)
         });
       });
     });
