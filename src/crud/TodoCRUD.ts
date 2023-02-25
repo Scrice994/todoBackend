@@ -1,5 +1,5 @@
 import { IRepository } from "src/repositories/IRepository";
-import { ICRUD, ICRUDSuccessResponse } from "./ICRUD";
+import { ICRUD } from "./ICRUD";
 import { TodoEntity } from "src/entities/TodoEntity";
 import { IEntity } from "src/entities/IEntity";
 import { DataStorageId } from "src/dataStorages/IDataStorage";

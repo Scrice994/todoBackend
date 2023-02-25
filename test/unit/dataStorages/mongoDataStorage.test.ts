@@ -5,7 +5,7 @@ import { TodoEntity } from "../../../src/entities/TodoEntity";
 import { MongoDataStorage } from "../../../src/dataStorages/MongoDataStorage"
 
 describe("unit", () => {
-  describe.only("dataStorages", () => {
+  describe("dataStorages", () => {
     const testTodo: Omit<TodoEntity, 'id'> = {text: "testText"}
     const testMongoDataStorage = new MongoDataStorage<TodoEntity>(Todo)
 
@@ -41,7 +41,7 @@ describe("unit", () => {
         })
       });
       describe("findAndUpdate()", () => {
-        it("should do the update of the given object if found", async () => {
+        it("Should update given object if found", async () => {
             const newTodo = await testMongoDataStorage.create(testTodo);
             const updateTodo = await testMongoDataStorage.update({id: newTodo.id!, completed: true})
 
@@ -49,7 +49,7 @@ describe("unit", () => {
         })
       });
       describe("findAndDelete()", () => {
-        it("should return the removed element and the collection must be empty", async () => {
+        it("Should remove the given element if found", async () => {
           const newTodo = await testMongoDataStorage.create(testTodo)
           const newTodoId = newTodo.id
           const deletedTodo = await testMongoDataStorage.delete(newTodoId!)

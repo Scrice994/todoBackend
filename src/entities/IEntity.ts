@@ -1,4 +1,4 @@
-import { DataStorageId } from "src/dataStorages/IDataStorage";
+import { DataStorageId } from "../dataStorages/IDataStorage";
 
 export interface IEntity {
     id: DataStorageId

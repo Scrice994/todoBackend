@@ -1,4 +1,4 @@
-import { IEntity } from "src/entities/IEntity";
+import { IEntity } from "../entities/IEntity";
 
 export type DataStorageId = string;
 
