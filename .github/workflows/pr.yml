@@ -12,3 +12,8 @@ jobs:
         run: npm ci
       - name: unit
         run: npm run test:unit
+      - name: build
+        run: npm run build
+      - name: test-api
+        run: npm run start
+        run: npm run test:api
