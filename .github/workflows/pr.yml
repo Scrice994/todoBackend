@@ -1,6 +1,7 @@
 on: push
 
 jobs:
+  runs-on: node:16-alpine
   install:
     steps: 
       - run: npm ci
