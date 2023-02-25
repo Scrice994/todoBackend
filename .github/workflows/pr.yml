@@ -6,7 +6,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-      with:
-        node-version: 16 
-      - run: npm ci
-      - run: npm run test:unit
+        with:
+          node-version: 16 
+      - name: npm-ci
+        run: npm ci
+      - name: unit
+        run: npm run test:unit
