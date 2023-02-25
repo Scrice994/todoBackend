@@ -10,7 +10,7 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "clean": "tsc --build --clean",
-    "start": "node buld/index.js",
+    "start": "node build/index.js",
     "start:dev": "nodemon build/index.js"
   },
   "author": "",
