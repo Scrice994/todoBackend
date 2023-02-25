@@ -1,0 +1,6 @@
+on: push
+
+jobs:
+  install:
+    steps: 
+      run: npm ci
