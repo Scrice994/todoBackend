@@ -3,17 +3,27 @@ on: push
 jobs:
   commit:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16 
+          node-version: 16
+
+      - name: Start MongoDB 6.0
+        uses: supercharge/mongodb-github-action@1.9.0
+        with:
+          mongodb-version: 6.0
+
       - name: npm-ci
         run: npm ci
+
       - name: unit
         run: npm run test:unit
+
       - name: build
         run: npm run build
+
       - name: test-api
         run: |  
           npm run start
