@@ -5,7 +5,7 @@ import { Todo } from "./entities/mongo/mongoSchema";
 import { connectDatabase } from "./connectDatabase";
 import { TodoEntity } from "./entities/TodoEntity";
 import { MongoDataStorage } from "./dataStorages/MongoDataStorage";
-const cors = require('cors')
+import cors from 'cors'
 
 
 const app = express();
