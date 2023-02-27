@@ -24,6 +24,6 @@ jobs:
 
       - name: test-api
         run: |
-          npm start
+          npm start &
           npm run test:api
 
