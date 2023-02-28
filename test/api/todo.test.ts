@@ -1,7 +1,6 @@
 import axios from "axios";
 import { expect, describe, it, beforeEach, afterAll } from "@jest/globals";
-import {Todo} from '../../src/entities/mongo/mongoSchema'
-import mongoose from 'mongoose'
+import { databaseConnection, closeDatabaseConnection, clearDatabase, initializeData, clearCollection } from "./utils/mongooseTestUtils";
 
 const todoTest = { text: "TestoProva" };
 
@@ -21,26 +20,20 @@ const dbInit = [
 describe("api", () => {
 
   beforeAll(async () => {
-    await mongoose.connect("mongodb://localhost:27017/todoList")
-    const findCollection = await mongoose.connection.db.listCollections().toArray()
-    findCollection.map(async col => {
-      if(col.name === "todos"){
-        await mongoose.connection.db.dropCollection('todos'); 
-      }
-    })
+    await databaseConnection()
+    await clearDatabase()
   })
 
   beforeEach(async () => {
-    await Todo.insertMany(dbInit);
+    await initializeData(dbInit)
   });
 
   afterEach(async () => {  
-    await mongoose.connection.db.dropCollection('todos');
+    await clearCollection()
   })
 
-  afterAll(done => {
-    mongoose.connection.close()
-    done()
+  afterAll(async () => {
+    await closeDatabaseConnection()
   })
 
 
