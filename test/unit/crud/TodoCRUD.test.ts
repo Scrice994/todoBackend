@@ -67,6 +67,17 @@ describe("unit", () => {
                         }
                     })
                 })
+
+                it("should return error if id is invalid or not found", async () => {
+                    const response = await CRUD.update(JSON.parse(JSON.stringify({text: "sampleText", completed: true})))
+                    
+                    expect(response).toEqual({
+                        statusCode: 404,
+                        data: {
+                            message: "Missing or invalid required @parameter id"
+                        }
+                    })
+                })
             })
 
             describe("delete()", () => {
@@ -77,6 +88,17 @@ describe("unit", () => {
                         statusCode: 200,
                         data: {
                             response: fakeResponse
+                        }
+                    })
+                })
+
+                it("should return error if id is invalid or not found", async () => {
+                    const response = await CRUD.delete(JSON.parse(JSON.stringify('')))
+
+                    expect(response).toEqual({
+                        statusCode: 404,
+                        data: {
+                            message: "Missing or invalid required @parameter id"
                         }
                     })
                 })

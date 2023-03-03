@@ -12,54 +12,74 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
     const todos = await this.repository.getAll();
 
     return {
-        statusCode: 200,
-        data: {
-            response: todos
-        }
-    }
+      statusCode: 200,
+      data: {
+        response: todos,
+      },
+    };
   }
 
-  async create(newTodo: Omit<TodoEntity, "id">): Promise<ICRUDResponse<TodoEntity>> {
-
+  async create(
+    newTodo: Omit<TodoEntity, "id">
+  ): Promise<ICRUDResponse<TodoEntity>> {
     if (!newTodo.text) {
-        return {
-          statusCode: 400,
-          data: {
-            message: "Missing required @parameter text"
-          }
-        }
-      }
+      return {
+        statusCode: 400,
+        data: {
+          message: "Missing required @parameter text",
+        },
+      };
+    }
 
     const result = await this.repository.insertOne(newTodo);
 
     return {
-        statusCode: 200,
-        data: {
-            response: result
-        }
+      statusCode: 200,
+      data: {
+        response: result,
+      },
     };
   }
 
-  async update(updateTodo: Required<IEntity> & Partial<TodoEntity>): Promise<ICRUDResponse<TodoEntity>> {
+  async update(
+    updateTodo: Required<IEntity> & Partial<TodoEntity>
+  ): Promise<ICRUDResponse<TodoEntity>> {
+    if (!updateTodo.id) {
+      return {
+        statusCode: 404,
+        data: {
+          message: "Missing or invalid required @parameter id",
+        },
+      };
+    }
 
     const result = await this.repository.updateOne(updateTodo);
 
     return {
-        statusCode: 200,
-        data: {
-            response: result
-        }
-    }
+      statusCode: 200,
+      data: {
+        response: result,
+      },
+    };
   }
 
   async delete(id: DataStorageId): Promise<ICRUDResponse<TodoEntity>> {
+    if (!id) {
+      return {
+        statusCode: 404,
+        data: {
+          message: "Missing or invalid required @parameter id",
+        },
+      };
+    }
+
     const result = await this.repository.deleteOne(id);
 
     return {
-        statusCode: 200,
-        data: {
-            response: result 
-        }
-    }
+      statusCode: 200,
+      data: {
+        response: result,
+      },
+    };
   }
 }
