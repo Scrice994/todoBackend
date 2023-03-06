@@ -1,0 +1,45 @@
+on: push
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Start MongoDB 6.0
+        uses: supercharge/mongodb-github-action@1.9.0
+
+      - name: npm-ci
+        run: npm ci
+
+      - name: unit
+        run: npm run test:unit
+
+      - name: build
+        run: npm run build
+
+      - name: test-api
+        run: |
+          npm start &
+          npm run test:api
+
+  e2e-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Test
+        run: |
+          curl -X POST https://api.github.com/repos/Scrice994/TodoE2E/dispatches \
+          -H 'Accept: application/vnd.github.everest-preview+json' \
+          -u ${{ secrets.BACKEND_ACCESS_TOKEN }} \
+          --data '{"event_type": "Trigger Workflow", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
+      - uses: actions/checkout@v3
