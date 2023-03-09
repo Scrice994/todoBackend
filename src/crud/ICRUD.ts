@@ -3,7 +3,7 @@ import { IEntity } from "src/entities/IEntity";
 
 interface ICRUDBaseResponse {
     statusCode: number;
-    data: {[key:string]: any}
+    data: {[key:string]: unknown}
 }
 
 export interface ICrudErrorResponse extends ICRUDBaseResponse {

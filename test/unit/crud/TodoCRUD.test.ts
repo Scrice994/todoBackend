@@ -1,4 +1,3 @@
-import { describe, it, expect } from '@jest/globals';
 import { RepositoryMock } from '../__mocks__/Repository.mock';
 import { TodoEntity } from '../../../src/entities/TodoEntity';
 import { TodoCRUD } from '../../../src/crud/TodoCRUD';

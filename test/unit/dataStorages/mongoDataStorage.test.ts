@@ -1,4 +1,3 @@
-import { describe, it, beforeAll, afterAll, beforeEach,expect,  } from "@jest/globals";
 import { connectFakeDB, dropFakeDB, dropFakeCollections } from "./mongoDataStorageSetup";
 import { Todo } from "../../../src/entities/mongo/mongoSchema"
 import { TodoEntity } from "../../../src/entities/TodoEntity";
@@ -43,7 +42,7 @@ describe("unit", () => {
       describe("findAndUpdate()", () => {
         it("Should update given object if found", async () => {
             const newTodo = await testMongoDataStorage.create(testTodo);
-            const updateTodo = await testMongoDataStorage.update({id: newTodo.id!, completed: true})
+            const updateTodo = await testMongoDataStorage.update({id: newTodo.id, completed: true})
 
             expect(updateTodo).toEqual({...newTodo, completed: true})
         })
@@ -52,7 +51,7 @@ describe("unit", () => {
         it("Should remove the given element if found", async () => {
           const newTodo = await testMongoDataStorage.create(testTodo)
           const newTodoId = newTodo.id
-          const deletedTodo = await testMongoDataStorage.delete(newTodoId!)
+          const deletedTodo = await testMongoDataStorage.delete(newTodoId)
           const todoArray = await testMongoDataStorage.find()
             
           expect(deletedTodo).toEqual(newTodo)

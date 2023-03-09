@@ -1,4 +1,3 @@
-import { jest } from "@jest/globals";
 import { IRepository } from "../../../src/repositories/IRepository";
 import { IEntity } from "../../../src/entities/IEntity";
 import { DataStorageId } from "../../../src/dataStorages/IDataStorage";

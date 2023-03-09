@@ -1,4 +1,3 @@
-import { jest } from "@jest/globals";
 import { DataStorageId, IDataStorage } from "../../../src/dataStorages/IDataStorage";
 import { IEntity } from "../../../src/entities/IEntity";
 

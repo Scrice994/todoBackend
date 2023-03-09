@@ -1,7 +1,6 @@
 import { TodoRepository } from "../../../src/repositories/TodoRepository";
 import { MongooseDataStorageMock } from "../__mocks__/MongooseDataStorage.mock";
 import { TodoEntity } from "../../../src/entities/TodoEntity";
-import { describe, it, expect } from "@jest/globals";
 
 describe("unit", () => {
   describe("repositories", () => {

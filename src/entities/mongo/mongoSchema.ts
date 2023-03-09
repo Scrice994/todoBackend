@@ -1,19 +1,21 @@
-import mongoose from "mongoose";
-import * as uuid from 'uuid'
+import { Schema, model, InferSchemaType } from 'mongoose';
+import * as uuid from 'uuid';
 
-const toDoSchema = new mongoose.Schema({
-  text: {
-    type: String,
-    required: true,
-  },
-  completed: {
-    type: Boolean,
-    default: false,
-  },
-  id: {
-    type: String,
-    default: uuid.v4
-  }
+const todoSchema = new Schema({
+    text: {
+        type: String,
+        required: true,
+    },
+    completed: {
+        type: Boolean,
+        default: false,
+    },
+    id: {
+        type: String,
+        default: uuid.v4,
+    },
 });
 
-export const Todo = mongoose.model("Todo", toDoSchema);
+type Todo = InferSchemaType<typeof todoSchema>
+
+export const Todo = model<Todo>('Todo', todoSchema);
