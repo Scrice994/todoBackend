@@ -22,8 +22,8 @@ describe('unit', () => {
                 statusCode: 500,
                 data: {
                     message: 'Unknown Error',
-                },    
-            }
+                },
+            };
 
             describe('read()', () => {
                 it('Should return all elements from the repository', async () => {
@@ -44,7 +44,7 @@ describe('unit', () => {
                         throw new Error();
                     });
 
-                    expect(await CRUD.read()).toEqual(unknownErrorResponse)
+                    expect(await CRUD.read()).toEqual(unknownErrorResponse);
                 });
             });
 
@@ -80,7 +80,9 @@ describe('unit', () => {
                         throw new Error();
                     });
 
-                    expect(await CRUD.create({ text: 'mockText' })).toEqual(unknownErrorResponse)
+                    expect(await CRUD.create({ text: 'mockText' })).toEqual(
+                        unknownErrorResponse
+                    );
                 });
             });
 
@@ -128,11 +130,13 @@ describe('unit', () => {
                         throw new Error();
                     });
 
-                    expect(await CRUD.update({
-                        id: 'mockId',
-                        completed: true,
-                        text: 'newText',
-                    })).toEqual(unknownErrorResponse)
+                    expect(
+                        await CRUD.update({
+                            id: 'mockId',
+                            completed: true,
+                            text: 'newText',
+                        })
+                    ).toEqual(unknownErrorResponse);
                 });
             });
 
@@ -169,9 +173,10 @@ describe('unit', () => {
                         throw new Error();
                     });
 
-                    expect(await CRUD.delete('mockId')).toEqual(unknownErrorResponse)
+                    expect(await CRUD.delete('mockId')).toEqual(
+                        unknownErrorResponse
+                    );
                 });
-
             });
         });
     });
