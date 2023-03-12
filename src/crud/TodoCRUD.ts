@@ -99,6 +99,21 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
         }
     }
 
+    async deleteAll(): Promise<ICRUDResponse<number>> {
+        try {
+            const result = await this.repository.deleteAllTodos();
+            
+            return {
+                statusCode:200,
+                data: {
+                    response: result
+                }
+            }
+        } catch (error) {
+            return this.unknownErrorResponse()
+        }
+    }
+
     private unknownErrorResponse() {
         return {
             statusCode: 500,

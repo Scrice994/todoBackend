@@ -88,5 +88,16 @@ describe("api", () => {
         expect(response.data).toEqual({ response: [dbInit[0]] });
       });
     });
+
+    describe("DELETE ALL", () => {
+      it("Should remove all todos from database", async () => {
+        const deleteAllTodos = await axios.delete(`${TODO_URL}/deleteAll`)
+
+        const response = await axios.get(TODO_URL)
+
+        expect(deleteAllTodos.data).toEqual({ response: 2 })
+        expect(response.data).toEqual({ response: [] })
+      })
+    })
   });
 });

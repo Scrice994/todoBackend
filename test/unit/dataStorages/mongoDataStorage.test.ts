@@ -58,6 +58,19 @@ describe("unit", () => {
           expect(todoArray).toEqual([])
         })
       });
+
+      describe("deleteMany()", () => {
+        it("Should remove all elements from the collection", async () => {
+          await testMongoDataStorage.create(testTodo)
+          await testMongoDataStorage.create({text: "testText2"})
+
+          const deleteAllTodo = await testMongoDataStorage.deleteMany()
+          const todoArray = await testMongoDataStorage.find()
+
+          expect(deleteAllTodo).toEqual(2)
+          expect(todoArray).toEqual([])
+        })
+      })
     });
   });
 });

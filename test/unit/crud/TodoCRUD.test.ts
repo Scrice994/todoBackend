@@ -177,6 +177,21 @@ describe('unit', () => {
                     );
                 });
             });
+            
+            describe("deleteAll()", () => {
+                it("should return all deleted elements from the repository", async () => {
+                    TodoRepositoryMock.deleteAllTodos.mockImplementationOnce(() =>
+                        Promise.resolve(2)
+                    );
+
+                    expect(await CRUD.deleteAll()).toEqual({
+                        statusCode: 200,
+                        data: {
+                            response: 2,
+                        },
+                    });
+                })    
+            })
         });
     });
 });

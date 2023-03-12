@@ -43,12 +43,19 @@ app.put('/todo/:id', async (req, res) => {
     res.status(updatedTodo.statusCode).json(updatedTodo.data);
 });
 
+app.delete('/todo/deleteAll', async (req, res) => {
+    const deletedTodos = await new TodoCRUD(REPOSITORY).deleteAll()
+
+    res.status(deletedTodos.statusCode).json(deletedTodos.data)
+})
+
 app.delete('/todo/:id', async (req, res) => {
     const { id } = req.params;
     const deletedTodo = await new TodoCRUD(REPOSITORY).delete(id);
 
     res.status(deletedTodo.statusCode).json(deletedTodo.data);
 });
+
 
 connectDatabase()
     .then(() =>

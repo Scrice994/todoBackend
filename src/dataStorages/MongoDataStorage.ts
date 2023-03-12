@@ -35,4 +35,10 @@ export class MongoDataStorage<T extends IEntity> implements IDataStorage<T> {
     const { _id, __v, ...result } = deletedEntity.toObject();
     return result;
   }
+
+  async deleteMany(): Promise<number> {
+    const deleteAllElements = await this._model.deleteMany({})
+    const { deletedCount } = deleteAllElements
+    return deletedCount
+  }
 }

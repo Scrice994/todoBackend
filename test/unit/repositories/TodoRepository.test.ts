@@ -49,6 +49,14 @@ describe("unit", () => {
           expect(await repository.deleteOne("mockId")).toEqual(fakeResponse)
         });
       });
+
+      describe("deleteAllTodos()", () => {
+        it("Should delete all todos", async () => {
+          mongooseDataStorageMock.deleteMany.mockImplementationOnce(() => Promise.resolve(2))
+
+          expect(await repository.deleteAllTodos()).toEqual(2)
+        })
+      })
     });
   });
 });

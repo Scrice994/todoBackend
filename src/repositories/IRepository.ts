@@ -6,4 +6,5 @@ export interface IRepository<T extends IEntity> {
     insertOne(newEntity: Omit<T, 'id'>): Promise<T>;
     updateOne(updateEntity: Required<IEntity> & Partial<T>): Promise<T>;
     deleteOne(id: DataStorageId): Promise<T>;
+    deleteAllTodos(): Promise<number>
 }

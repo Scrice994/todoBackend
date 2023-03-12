@@ -18,4 +18,6 @@ export class MongooseDataStorageMock<T extends IEntity> implements IDataStorage<
     delete = jest.fn(async (id: DataStorageId): Promise<T> => {
         return Promise.resolve<T>(id as unknown as T)
     })
+
+    deleteMany = jest.fn()
 }

@@ -28,4 +28,9 @@ export class TodoRepository implements IRepository<TodoEntity>{
         const result = await this.dataStorage.delete(id)
         return result
     }
+
+    async deleteAllTodos(): Promise<number> {
+        const result = await this.dataStorage.deleteMany()
+        return result
+    }
 }

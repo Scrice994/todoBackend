@@ -25,4 +25,5 @@ export interface ICRUD<T extends IEntity>{
     create(newElement: Omit<T, 'id'>): Promise<ICRUDResponse<T>>;
     update(updateElement: Required<IEntity> & Partial<T>): Promise<ICRUDResponse<T>>;
     delete(id: DataStorageId): Promise<ICRUDResponse<T>>;
+    deleteAll(): Promise<ICRUDResponse<number>>
 }

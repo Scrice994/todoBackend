@@ -18,4 +18,6 @@ export class RepositoryMock<T extends IEntity> implements IRepository<T>{
     deleteOne = jest.fn(async (id: DataStorageId): Promise<T> => {
         return Promise.resolve<T>(id as unknown as T)
     })
+
+    deleteAllTodos = jest.fn()
 }
