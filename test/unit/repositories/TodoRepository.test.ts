@@ -54,7 +54,7 @@ describe("unit", () => {
         it("Should delete all todos", async () => {
           mongooseDataStorageMock.deleteMany.mockImplementationOnce(() => Promise.resolve(2))
 
-          expect(await repository.deleteAllTodos()).toEqual(2)
+          expect(await repository.deleteAll()).toEqual(2)
         })
       })
     });

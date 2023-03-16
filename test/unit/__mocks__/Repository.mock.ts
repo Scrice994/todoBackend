@@ -7,6 +7,8 @@ export class RepositoryMock<T extends IEntity> implements IRepository<T>{
         return Promise.resolve<T[]>([])
     })
 
+    getOneById = jest.fn()
+
     insertOne = jest.fn(async (newElement: Omit<T, 'id'>): Promise<T> => {
         return Promise.resolve<T>(newElement as T)
     })
@@ -19,5 +21,5 @@ export class RepositoryMock<T extends IEntity> implements IRepository<T>{
         return Promise.resolve<T>(id as unknown as T)
     })
 
-    deleteAllTodos = jest.fn()
+    deleteAll = jest.fn()
 }

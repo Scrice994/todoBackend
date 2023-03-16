@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import { Todo } from "../../../src/entities/mongo/mongoSchema";
+import { Todo } from "../../../src/entities/mongo/todoSchema";
 
 let mongo: MongoMemoryServer | null = null;
 

@@ -3,8 +3,9 @@ import { IEntity } from "src/entities/IEntity";
 
 export interface IRepository<T extends IEntity> {
     getAll(): Promise<T[]>;
+    getOneById(id: DataStorageId): Promise<T>;
     insertOne(newEntity: Omit<T, 'id'>): Promise<T>;
     updateOne(updateEntity: Required<IEntity> & Partial<T>): Promise<T>;
     deleteOne(id: DataStorageId): Promise<T>;
-    deleteAllTodos(): Promise<number>
+    deleteAll(): Promise<number>
 }

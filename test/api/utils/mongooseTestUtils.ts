@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Todo } from "../../../src/entities/mongo/mongoSchema";
+import { Todo } from "../../../src/entities/mongo/todoSchema";
 import { TodoEntity } from "../../../src/entities/TodoEntity"
 
 export const databaseConnection = async () => {

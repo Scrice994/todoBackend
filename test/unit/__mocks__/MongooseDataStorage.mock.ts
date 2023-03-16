@@ -6,7 +6,8 @@ export class MongooseDataStorageMock<T extends IEntity> implements IDataStorage<
         return Promise.resolve<T[]>([])
     })
 
-    
+    findById = jest.fn()
+
     create = jest.fn(async (newEntity: Omit<T, 'id'>): Promise<T> => {
         return Promise.resolve<T>(newEntity as T)
     })

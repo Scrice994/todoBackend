@@ -19,8 +19,16 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
                 },
             };
         } catch (error) {
-            return this.unknownErrorResponse();
+            if(error instanceof Error){
+                return this.errorResponse(error);
+            } else {
+                return this.unknownErrorResponse()
+            }
         }
+    }
+
+    readOne(): Promise<ICRUDResponse<TodoEntity>> {
+        throw new Error('Method not implemented.');
     }
 
     async create(
@@ -45,7 +53,11 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
                 },
             };
         } catch (error) {
-            return this.unknownErrorResponse();
+            if(error instanceof Error){
+                return this.errorResponse(error);
+            } else {
+                return this.unknownErrorResponse()
+            }
         }
     }
 
@@ -71,7 +83,11 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
                 },
             };
         } catch (error) {
-            return this.unknownErrorResponse();
+            if(error instanceof Error){
+                return this.errorResponse(error);
+            } else {
+                return this.unknownErrorResponse()
+            }
         }
     }
 
@@ -95,13 +111,17 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
                 },
             };
         } catch (error) {
-            return this.unknownErrorResponse();
+            if(error instanceof Error){
+                return this.errorResponse(error);
+            } else {
+                return this.unknownErrorResponse()
+            }
         }
     }
 
     async deleteAll(): Promise<ICRUDResponse<number>> {
         try {
-            const result = await this.repository.deleteAllTodos();
+            const result = await this.repository.deleteAll();
             
             return {
                 statusCode:200,
@@ -110,15 +130,28 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
                 }
             }
         } catch (error) {
-            return this.unknownErrorResponse()
+            if(error instanceof Error){
+                return this.errorResponse(error);
+            } else {
+                return this.unknownErrorResponse()
+            }
         }
     }
 
-    private unknownErrorResponse() {
+    private errorResponse(error: Error) {
         return {
             statusCode: 500,
             data: {
-                message: 'Unknown Error',
+                message: error.message,
+            },
+        };
+    }
+
+    private unknownErrorResponse(){
+        return {
+            statusCode: 500,
+            data: {
+                message: "An Unknown error occured",
             },
         };
     }

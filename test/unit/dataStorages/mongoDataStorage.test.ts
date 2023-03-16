@@ -1,12 +1,14 @@
 import { connectFakeDB, dropFakeDB, dropFakeCollections } from "./mongoDataStorageSetup";
-import { Todo } from "../../../src/entities/mongo/mongoSchema"
+import { Todo } from "../../../src/entities/mongo/todoSchema"
+import { User } from "../../../src/entities/mongo/userSchema"
 import { TodoEntity } from "../../../src/entities/TodoEntity";
+import { UserEntity } from "../../../src/entities/UserEntity";
 import { MongoDataStorage } from "../../../src/dataStorages/MongoDataStorage"
 
 describe("unit", () => {
   describe("dataStorages", () => {
     const testTodo: Omit<TodoEntity, 'id'> = {text: "testText"}
-    const testMongoDataStorage = new MongoDataStorage<TodoEntity>(Todo)
+    const testTodoMongoDataStorage = new MongoDataStorage<TodoEntity>(Todo)
 
     beforeAll( async () => {
         connectFakeDB()
@@ -21,17 +23,27 @@ describe("unit", () => {
     describe("MongoDataStorage", () => {
       describe("find()", () => {
         it("Should find all object in the db", async () => {
-            const newTodo = await testMongoDataStorage.create(testTodo)
-            const findTodo = await testMongoDataStorage.find()
+            const newTodo = await testTodoMongoDataStorage.create(testTodo)
+            const findTodo = await testTodoMongoDataStorage.find()
     
             expect(findTodo).toEqual([newTodo])
         })
       });
 
+      describe("findById()", () => {
+        it("Should find the element with the given id", async () => {
+          const newTodo = await testTodoMongoDataStorage.create(testTodo)
+
+          const findTodo = await testTodoMongoDataStorage.findById(newTodo.id)
+
+          expect(newTodo).toEqual(findTodo)
+        })
+      })
+
       describe("create()", () => {
         it("Should create a new object into the db", async () => {
-            const newTodo = await testMongoDataStorage.create(testTodo)
-            const findNewTodo = await testMongoDataStorage.find()
+            const newTodo = await testTodoMongoDataStorage.create(testTodo)
+            const findNewTodo = await testTodoMongoDataStorage.find()
     
             expect(newTodo.id).toBeDefined()
             expect(newTodo.completed).toBe(false)
@@ -41,18 +53,18 @@ describe("unit", () => {
       });
       describe("findAndUpdate()", () => {
         it("Should update given object if found", async () => {
-            const newTodo = await testMongoDataStorage.create(testTodo);
-            const updateTodo = await testMongoDataStorage.update({id: newTodo.id, completed: true})
+            const newTodo = await testTodoMongoDataStorage.create(testTodo);
+            const updateTodo = await testTodoMongoDataStorage.update({id: newTodo.id, completed: true})
 
             expect(updateTodo).toEqual({...newTodo, completed: true})
         })
       });
       describe("findAndDelete()", () => {
         it("Should remove the given element if found", async () => {
-          const newTodo = await testMongoDataStorage.create(testTodo)
+          const newTodo = await testTodoMongoDataStorage.create(testTodo)
           const newTodoId = newTodo.id
-          const deletedTodo = await testMongoDataStorage.delete(newTodoId)
-          const todoArray = await testMongoDataStorage.find()
+          const deletedTodo = await testTodoMongoDataStorage.delete(newTodoId)
+          const todoArray = await testTodoMongoDataStorage.find()
             
           expect(deletedTodo).toEqual(newTodo)
           expect(todoArray).toEqual([])
@@ -61,11 +73,11 @@ describe("unit", () => {
 
       describe("deleteMany()", () => {
         it("Should remove all elements from the collection", async () => {
-          await testMongoDataStorage.create(testTodo)
-          await testMongoDataStorage.create({text: "testText2"})
+          await testTodoMongoDataStorage.create(testTodo)
+          await testTodoMongoDataStorage.create({text: "testText2"})
 
-          const deleteAllTodo = await testMongoDataStorage.deleteMany()
-          const todoArray = await testMongoDataStorage.find()
+          const deleteAllTodo = await testTodoMongoDataStorage.deleteMany()
+          const todoArray = await testTodoMongoDataStorage.find()
 
           expect(deleteAllTodo).toEqual(2)
           expect(todoArray).toEqual([])

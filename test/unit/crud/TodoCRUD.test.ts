@@ -17,10 +17,10 @@ describe('unit', () => {
                 text: 'newText',
                 completed: true,
             };
-            const unknownErrorResponse = {
+            const errorResponse = {
                 statusCode: 500,
                 data: {
-                    message: 'Unknown Error',
+                    message: 'Fake Error',
                 },
             };
 
@@ -40,10 +40,10 @@ describe('unit', () => {
 
                 it('Should return error message when unknown error occurs', async () => {
                     TodoRepositoryMock.getAll.mockImplementationOnce(() => {
-                        throw new Error();
+                        throw new Error("Fake Error");
                     });
 
-                    expect(await CRUD.read()).toEqual(unknownErrorResponse);
+                    expect(await CRUD.read()).toEqual(errorResponse);
                 });
             });
 
@@ -76,11 +76,11 @@ describe('unit', () => {
 
                 it('Should return error message when unknown error occurs', async () => {
                     TodoRepositoryMock.insertOne.mockImplementationOnce(() => {
-                        throw new Error();
+                        throw new Error("Fake Error");
                     });
 
                     expect(await CRUD.create({ text: 'mockText' })).toEqual(
-                        unknownErrorResponse
+                        errorResponse
                     );
                 });
             });
@@ -126,7 +126,7 @@ describe('unit', () => {
 
                 it('Should return error message when unknown error occurs', async () => {
                     TodoRepositoryMock.updateOne.mockImplementationOnce(() => {
-                        throw new Error();
+                        throw new Error("Fake Error");
                     });
 
                     expect(
@@ -135,7 +135,7 @@ describe('unit', () => {
                             completed: true,
                             text: 'newText',
                         })
-                    ).toEqual(unknownErrorResponse);
+                    ).toEqual(errorResponse);
                 });
             });
 
@@ -169,18 +169,18 @@ describe('unit', () => {
 
                 it('Should return error message when unknown error occurs', async () => {
                     TodoRepositoryMock.deleteOne.mockImplementationOnce(() => {
-                        throw new Error();
+                        throw new Error("Fake Error");
                     });
 
                     expect(await CRUD.delete('mockId')).toEqual(
-                        unknownErrorResponse
+                        errorResponse
                     );
                 });
             });
             
             describe("deleteAll()", () => {
                 it("should return all deleted elements from the repository", async () => {
-                    TodoRepositoryMock.deleteAllTodos.mockImplementationOnce(() =>
+                    TodoRepositoryMock.deleteAll.mockImplementationOnce(() =>
                         Promise.resolve(2)
                     );
 

@@ -13,6 +13,10 @@ export class TodoRepository implements IRepository<TodoEntity>{
         return result
     }
 
+    getOneById(): Promise<TodoEntity> {
+        throw new Error("Method not implemented.");
+    }
+
     async insertOne(newTodo: Omit<TodoEntity, 'id'>): Promise<TodoEntity> {
         const result = await this.dataStorage.create(newTodo)
         return result
@@ -29,7 +33,7 @@ export class TodoRepository implements IRepository<TodoEntity>{
         return result
     }
 
-    async deleteAllTodos(): Promise<number> {
+    async deleteAll(): Promise<number> {
         const result = await this.dataStorage.deleteMany()
         return result
     }
