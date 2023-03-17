@@ -1,8 +1,6 @@
 import { connectFakeDB, dropFakeDB, dropFakeCollections } from "./mongoDataStorageSetup";
 import { Todo } from "../../../src/entities/mongo/todoSchema"
-import { User } from "../../../src/entities/mongo/userSchema"
 import { TodoEntity } from "../../../src/entities/TodoEntity";
-import { UserEntity } from "../../../src/entities/UserEntity";
 import { MongoDataStorage } from "../../../src/dataStorages/MongoDataStorage"
 
 describe("unit", () => {
@@ -34,7 +32,7 @@ describe("unit", () => {
         it("Should find the element with the given id", async () => {
           const newTodo = await testTodoMongoDataStorage.create(testTodo)
 
-          const findTodo = await testTodoMongoDataStorage.findById(newTodo.id)
+          const findTodo = await testTodoMongoDataStorage.findOneByKey({id: newTodo.id})
 
           expect(newTodo).toEqual(findTodo)
         })

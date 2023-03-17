@@ -10,19 +10,19 @@ describe('unit', () => {
 
             describe('getOneById()', () => {
                 it('Should call findById() from the DataStorage', async () => {
-                    dataStorageMock.findById.mockImplementationOnce(() =>
+                    dataStorageMock.findOneByKey.mockImplementationOnce(() =>
                         Promise.resolve({
                             username: 'testUsername',
-                            hash: 'mockHash',
-                            salt: 'mockSalt',
+                            password: 'testPassword123',
+                            salt: "mockSalt",
                             id: 'mockId',
                         })
                     );
 
-                    expect(await repository.getOneById('mockId')).toEqual({
+                    expect(await repository.getOneByKey({id: 'mockId'})).toEqual({
                         username: 'testUsername',
-                        hash: 'mockHash',
-                        salt: 'mockSalt',
+                        password: 'testPassword123',
+                        salt: "mockSalt",
                         id: 'mockId',
                     });
                 });
@@ -33,8 +33,8 @@ describe('unit', () => {
                     dataStorageMock.create.mockImplementationOnce(() =>
                         Promise.resolve({
                             username: 'testUsername',
-                            hash: 'mockHash',
-                            salt: 'mockSalt',
+                            password: 'testPassword123',
+                            salt: "mockSalt",
                             id: 'mockId',
                         })
                     );
@@ -42,13 +42,13 @@ describe('unit', () => {
                     expect(
                         await repository.insertOne({
                             username: 'testUsername',
-                            hash: 'mockHash',
-                            salt: 'mockSalt',
+                            password: 'testPassword123',
+                            salt: "mockSalt"
                         })
                     ).toEqual({
                         username: 'testUsername',
-                        hash: 'mockHash',
-                        salt: 'mockSalt',
+                        password: 'testPassword123',
+                        salt: "mockSalt",
                         id: 'mockId',
                     });
                 });

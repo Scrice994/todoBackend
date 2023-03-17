@@ -1,4 +1,4 @@
-import { ValidCredentials } from '../../../src/utils/ValidCredentials'
+import { ValidCredentials } from '../../../src/utils/verifyCredentials/ValidCredentials'
 
 describe("unit", () => {
     describe("utils", () => {
@@ -38,7 +38,7 @@ describe("unit", () => {
 
             describe("passwordCheck()", () => {
                 it("should return true if password is valid", () => {
-                    const credentials = new ValidCredentials('', 'testPassword1')
+                    const credentials = new ValidCredentials('', 'testpassword1')
 
                     const password = credentials.passwordCheck()
 

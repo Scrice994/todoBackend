@@ -13,7 +13,7 @@ export class TodoRepository implements IRepository<TodoEntity>{
         return result
     }
 
-    getOneById(): Promise<TodoEntity> {
+    getOneByKey(): Promise<TodoEntity> {
         throw new Error("Method not implemented.");
     }
 

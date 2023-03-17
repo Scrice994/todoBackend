@@ -10,8 +10,8 @@ export class UserRepository implements IRepository<UserEntity>{
         throw new Error("Method not implemented.");
     }
 
-    async getOneById(userId: DataStorageId): Promise<UserEntity>{
-        const result = await this.DataStorage.findById(userId)
+    async getOneByKey(obj: {[key: string]: unknown}): Promise<UserEntity>{
+        const result = await this.DataStorage.findOneByKey(obj)
         return result
     }
 

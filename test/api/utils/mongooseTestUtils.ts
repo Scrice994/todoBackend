@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import { Todo } from "../../../src/entities/mongo/todoSchema";
-import { TodoEntity } from "../../../src/entities/TodoEntity"
 
 export const databaseConnection = async () => {
   await mongoose.connect("mongodb://localhost:27017/todoList");
@@ -15,13 +13,13 @@ export const clearDatabase = async () => {
   findCollection.map(col => col.name).forEach(async colName => await database.dropCollection(colName))
 }
 
-export const clearCollection = async () => {
-  await mongoose.connection.db.dropCollection('todos');
+export const clearCollection = async (colName: string) => {
+  await mongoose.connection.db.dropCollection(colName);
 }
 
 
-export const initializeData = async (array: TodoEntity[]) => {
-  await Todo.insertMany(array);
+export const initializeData = async (array: any[], model: mongoose.Model<any>) => {
+  await model.insertMany(array);
 };
 
 export const closeDatabaseConnection = async () => {

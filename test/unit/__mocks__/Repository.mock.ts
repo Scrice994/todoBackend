@@ -3,11 +3,12 @@ import { IEntity } from "../../../src/entities/IEntity";
 import { DataStorageId } from "../../../src/dataStorages/IDataStorage";
 
 export class RepositoryMock<T extends IEntity> implements IRepository<T>{
+
     getAll = jest.fn(() => {
         return Promise.resolve<T[]>([])
     })
 
-    getOneById = jest.fn()
+    getOneByKey= jest.fn()
 
     insertOne = jest.fn(async (newElement: Omit<T, 'id'>): Promise<T> => {
         return Promise.resolve<T>(newElement as T)

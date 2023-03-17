@@ -1,6 +1,6 @@
 import axios from "axios";
-import { expect, describe, it, beforeEach, afterAll } from "@jest/globals";
 import { databaseConnection, closeDatabaseConnection, clearDatabase, initializeData, clearCollection } from "./utils/mongooseTestUtils";
+import { Todo } from "../../src/entities/mongo/todoSchema";
 
 const todoTest = { text: "TestoProva" };
 
@@ -25,11 +25,11 @@ describe("api", () => {
   })
 
   beforeEach(async () => {
-    await initializeData(dbInit)
+    await initializeData(dbInit, Todo)
   });
 
   afterEach(async () => {  
-    await clearCollection()
+    await clearCollection('todos')
   })
 
   afterAll(async () => {

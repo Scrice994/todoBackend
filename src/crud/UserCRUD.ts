@@ -2,7 +2,6 @@ import { IRepository } from 'src/repositories/IRepository';
 import { ICRUD } from './ICRUD';
 import { UserEntity } from 'src/entities/UserEntity';
 import { IEntity } from 'src/entities/IEntity';
-import { DataStorageId } from 'src/dataStorages/IDataStorage';
 import { ICRUDResponse } from './ICRUD';
 
 export class UserCRUD implements ICRUD<UserEntity>{
@@ -11,9 +10,9 @@ export class UserCRUD implements ICRUD<UserEntity>{
     async read(): Promise<ICRUDResponse<UserEntity[]>> {
         throw new Error('Method not implemented.');
     }
-    async readOne(userId: DataStorageId): Promise<ICRUDResponse<UserEntity>> {
+    async readOne(obj: {[key: string]: unknown}): Promise<ICRUDResponse<UserEntity>> {
         try {
-            const result = await this.repository.getOneById(userId)    
+            const result = await this.repository.getOneByKey(obj)    
 
             return {
                 statusCode: 200,

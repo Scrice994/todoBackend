@@ -3,8 +3,8 @@ import * as uuid from 'uuid';
 
 const userSchema = new Schema({
     username: { type: String, require: true },
-    hash: { type: String },
-    salt: { type: String },
+    password: { type: String, require: true },
+    salt: { type: String, require: true },
     id: { default: uuid.v4, type: String },
 });
 

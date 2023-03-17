@@ -10,22 +10,22 @@ describe('unit', () => {
 
             describe('readOne()', () => {
                 it('Should call getOneById() function from the UserRepository', async () => {
-                    UserRepositoryMock.getOneById.mockImplementationOnce(() =>
+                    UserRepositoryMock.getOneByKey.mockImplementationOnce(() =>
                         Promise.resolve({
                             username: 'testUsername',
-                            hash: 'mockHash',
-                            salt: 'mockSalt',
+                            password: "testPassword123",
+                            salt: "mockSalt",
                             id: 'mockId',
                         })
                     );
 
-                    expect(await crud.readOne('mockId')).toEqual({
+                    expect(await crud.readOne({id: 'mockId'})).toEqual({
                         statusCode: 200,
                         data: {
                             response: {
                                 username: 'testUsername',
-                                hash: 'mockHash',
-                                salt: 'mockSalt',
+                                password: "testPassword123",
+                                salt: "mockSalt",
                                 id: 'mockId',
                             },
                         },
@@ -38,8 +38,8 @@ describe('unit', () => {
                     UserRepositoryMock.insertOne.mockImplementationOnce(() =>
                         Promise.resolve({
                             username: 'testUsername',
-                            hash: 'mockHash',
-                            salt: 'mockSalt',
+                            password: 'testPassword123',
+                            salt: "mockSalt",
                             id: 'mockId',
                         })
                     );
@@ -47,16 +47,16 @@ describe('unit', () => {
                     expect(
                         await crud.create({
                             username: 'testUsername',
-                            hash: 'mockHash',
-                            salt: 'mockSalt',
+                            password: 'testPassword123',
+                            salt: "mockSalt",
                         })
                     ).toEqual({
                         statusCode: 200,
                         data: {
                             response: {
                                 username: 'testUsername',
-                                hash: 'mockHash',
-                                salt: 'mockSalt',
+                                password: "testPassword123",
+                                salt: "mockSalt",
                                 id: 'mockId',
                             }
                         }

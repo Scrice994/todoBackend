@@ -17,9 +17,9 @@ export class ValidCredentials implements IValidCredentials {
     }
 
     passwordCheck() {
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{6,}$/
+        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\w\W]{6,}$/
 
-        const validPassword = this.password.match(passwordRegex)
+        const validPassword = passwordRegex.test(this.password)
 
         if(validPassword){
             return true

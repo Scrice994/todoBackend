@@ -4,8 +4,9 @@ import cors from 'cors';
 import todoRoutes from './routes/todo'
 import userRoutes from './routes/user'
 
-const app = express();
+export const app = express();
 const PORT = 3005;
+export const secret = 'jqeiqnibqiudqjdwoqkwdpqkwdoqndo'
 
 app.use(express.json());
 app.use(cors());
