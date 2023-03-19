@@ -6,7 +6,7 @@ import { ICRUDResponse } from './ICRUD';
 
 export class UserCRUD implements ICRUD<UserEntity>{
     constructor(private repository: IRepository<UserEntity>){}
-
+    
     async read(): Promise<ICRUDResponse<UserEntity[]>> {
         throw new Error('Method not implemented.');
     }

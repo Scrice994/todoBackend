@@ -1,9 +1,8 @@
-import { RequestHandler } from 'express';
 import { JWTHandler } from '../utils/tokenHandler/JWTHandler';
 import { JsonWebTokenPkg } from '../utils/tokenHandler/JsonWebTokenPkg';
 import { secret } from '../index';
 
-export const authMiddleware: RequestHandler = (req, res, next) => {
+export const authMiddleware = (req, res, next) => {
     if(req.headers.authorization){
         const tokenParts = req.headers.authorization.split(' ')
 

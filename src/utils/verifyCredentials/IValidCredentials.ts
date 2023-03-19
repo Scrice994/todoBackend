@@ -1,4 +1,4 @@
 export interface IValidCredentials{
-   usernameCheck(): true | false
-   passwordCheck(): true | false
+   usernameCheck(): boolean
+   passwordCheck(): boolean
 }

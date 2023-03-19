@@ -15,13 +15,21 @@ describe("unit", () => {
                 }
 
                 describe("issueJWT()",() => {
-                    it("should call callSignedToken() from JsonWebToken class dependency", async () => {
+                    it("should call signToken() from constructor class and return TokenObj", async () => {
                         testJsonWebTokenPkg.singToken.mockImplementationOnce(() => ('testToken'))
                     
-                        expect(testJWTHandler.issueJWT(fakeUser)).toEqual({
+                        expect(testJWTHandler.issueJWT(fakeUser, 'fakeSecret')).toEqual({
                             token: 'Bearer testToken',
                             expires: '1d'
                         })
+                    })
+                })
+
+                describe("checKJWT()", () => {
+                    it("should call verifyToken() from constructor class and return true", () => {
+                        testJsonWebTokenPkg.verifyToken.mockImplementationOnce(() => ('fakeToken'))
+
+                        expect(testJWTHandler.checkJWT('fakeToken', 'fakeSecret')).toBe('fakeToken')
                     })
                 })
             })

@@ -14,7 +14,14 @@ export const clearDatabase = async () => {
 }
 
 export const clearCollection = async (colName: string) => {
-  await mongoose.connection.db.dropCollection(colName);
+  const database = mongoose.connection.db;
+  const findCollection = await database.listCollections().toArray();
+  
+  const collection = findCollection.map(col => col.name === colName)
+
+  if(collection[0] === true){
+    await mongoose.connection.db.dropCollection(colName);
+  }
 }
 
 

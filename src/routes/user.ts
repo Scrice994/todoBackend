@@ -30,18 +30,16 @@ routes.post('/signup', async (req, res, next) => {
     const validPassword = credentials.passwordCheck()
 
     if(!validUsername){
-        console.log('check username')
         return res.status(400).json({ message: "Username must have only alphanumeric chars and be 4-20 length" })
     }
     if(!validPassword){
-        console.log('check password')
         return res.status(400).json({ message: "Password must be at least 6 length, and have at least 1 number and 1 letter"})
     }
 
-    const user = await new UserCRUD(REPOSITORY).readOne({username: username})
+    const findExistingUser = await new UserCRUD(REPOSITORY).readOne({username: username})
 
-    if('response' in user.data){
-        return res.status(400).json( {message: "This user already exist"} )
+    if('response' in findExistingUser.data){
+        return res.status(400).json({ message: "This user already exist" })
     }
 
     const cryptoObj = new PasswordHandler(new CryptoPasswordHandler()).cryptPassword(password)
@@ -60,11 +58,8 @@ routes.post('/signup', async (req, res, next) => {
         return res.status(200).json({ user: user, token: jwt.token, expireIn: jwt.expires})
 
     } else {
-
         return res.status(400).json({ message: "Error while trying to create user"})
-
     }
-
 })
 
 routes.post('/login', async (req, res, next) => {
@@ -77,16 +72,16 @@ routes.post('/login', async (req, res, next) => {
 
        const passwordVerification = new PasswordHandler(new CryptoPasswordHandler()).checkPassword(password, user.password, user.salt)
 
-       if(!passwordVerification){
-        res.status(400).json({ message: "Credenziali errate" })
-       }
+        if(!passwordVerification){
+            return res.status(401).json({ message: "Wrong credentials" })
+        }
 
-       const jwt = new JWTHandler(new JsonWebTokenPkg()).issueJWT(user, secret)
+        const jwt = new JWTHandler(new JsonWebTokenPkg()).issueJWT(user, secret)
 
-       res.status(200).json({ user: user, token: jwt.token, expireIn: jwt.expires })
+        return res.status(200).json({ user: user, token: jwt.token, expireIn: jwt.expires })
 
     } else {
-        res.status(400).json({ message: "Credenziali errate" })
+        return res.status(401).json({ message: "Wrong credentials" })
     }
 })
 
