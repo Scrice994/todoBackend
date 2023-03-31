@@ -8,21 +8,23 @@ describe("unit", () => {
       const mongooseDataStorageMock = new MongooseDataStorageMock<TodoEntity>();
       const repository = new TodoRepository(mongooseDataStorageMock);
       const fakeResponse = {
-        id: 'mockId',
         text: 'mockText',
-        completed: false
+        completed: false,
+        userId: 'mockUserId',
+        id: 'mockId'
       }
       const fakeResponseUpdate = {
-        id: 'mockId',
         text: 'mockText',
-        completed: true
+        completed: false,
+        userId: 'mockUserId',
+        id: 'mockId'
       }
 
       describe("getAll()", () => {
         it("Should return all TodoEntity objects in the data storage", async () => {
           mongooseDataStorageMock.find.mockImplementationOnce(() => Promise.resolve([fakeResponse]))
 
-          expect(await repository.getAll()).toEqual([fakeResponse])
+          expect(await repository.getAll({userId: 'mockUserId'})).toEqual([fakeResponse])
         });
       });
 
@@ -30,7 +32,7 @@ describe("unit", () => {
         it("Should create a new TodoEntity object", async () => {
           mongooseDataStorageMock.create.mockImplementationOnce(() => Promise.resolve(fakeResponse))
 
-          expect(await repository.insertOne({text: 'mockText'})).toEqual(fakeResponse)
+          expect(await repository.insertOne({text: 'mockText', userId: 'mockUserId'})).toEqual(fakeResponse)
         });
       });
 
@@ -54,7 +56,7 @@ describe("unit", () => {
         it("Should delete all todos", async () => {
           mongooseDataStorageMock.deleteMany.mockImplementationOnce(() => Promise.resolve(2))
 
-          expect(await repository.deleteAll()).toEqual(2)
+          expect(await repository.deleteAll({userId: 'mockUserId'})).toEqual(2)
         })
       })
     });

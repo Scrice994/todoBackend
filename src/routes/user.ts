@@ -16,8 +16,12 @@ const routes = express.Router()
 
 const REPOSITORY = new UserRepository(new MongoDataStorage<UserEntity>(User))
 
-routes.get('/protected', authMiddleware, async (req, res) => {
-    res.send("Hai accesso a questo contenuto")
+routes.get('/findUser', authMiddleware, async (req, res) => {
+    const userId = req.userId
+
+    const user = await new UserCRUD(REPOSITORY).readOne({id: userId})
+
+    res.status(user.statusCode).json(user.data)
 })
 
 routes.post('/signup', async (req, res, next) => {

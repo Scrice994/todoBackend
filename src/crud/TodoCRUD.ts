@@ -8,9 +8,18 @@ import { ICRUDResponse } from './ICRUD';
 export class TodoCRUD implements ICRUD<TodoEntity> {
     constructor(private repository: IRepository<TodoEntity>) {}
 
-    async read(): Promise<ICRUDResponse<TodoEntity[]>> {
+    async read(obj: { [key: string]: unknown }): Promise<ICRUDResponse<TodoEntity[]>> {
         try {
-            const todos = await this.repository.getAll();
+            if(!obj){
+                return {
+                    statusCode: 404,
+                    data: {
+                        message: 'Missing required @parameter filter obj',
+                    }
+                }
+            }
+
+            const todos = await this.repository.getAll(obj);
 
             return {
                 statusCode: 200,
@@ -18,12 +27,9 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
                     response: todos,
                 },
             };
+
         } catch (error) {
-            if(error instanceof Error){
-                return this.errorResponse(error);
-            } else {
-                return this.unknownErrorResponse()
-            }
+            return this.errorResponse(error);
         }
     }
 
@@ -31,15 +37,22 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
         throw new Error('Method not implemented.');
     }
 
-    async create(
-        newTodo: Omit<TodoEntity, 'id'>
-    ): Promise<ICRUDResponse<TodoEntity>> {
+    async create(newTodo: Omit<TodoEntity, 'id'>): Promise<ICRUDResponse<TodoEntity>> {
         try {
-            if (!newTodo.text) {
+            if (!newTodo.text || newTodo.text === '') {
                 return {
-                    statusCode: 400,
+                    statusCode: 404,
                     data: {
                         message: 'Missing required @parameter text',
+                    },
+                };
+            }
+
+            if (!newTodo.userId) {
+                return {
+                    statusCode: 404,
+                    data: {
+                        message: 'Missing required @parameter userId',
                     },
                 };
             }
@@ -53,17 +66,11 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
                 },
             };
         } catch (error) {
-            if(error instanceof Error){
-                return this.errorResponse(error);
-            } else {
-                return this.unknownErrorResponse()
-            }
+            return this.errorResponse(error);
         }
     }
 
-    async update(
-        updateTodo: Required<IEntity> & Partial<TodoEntity>
-    ): Promise<ICRUDResponse<TodoEntity>> {
+    async update(updateTodo: Required<IEntity> & Partial<TodoEntity>): Promise<ICRUDResponse<TodoEntity>> {
         try {
             if (!updateTodo.id) {
                 return {
@@ -83,11 +90,7 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
                 },
             };
         } catch (error) {
-            if(error instanceof Error){
-                return this.errorResponse(error);
-            } else {
-                return this.unknownErrorResponse()
-            }
+            return this.errorResponse(error);
         }
     }
 
@@ -111,17 +114,22 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
                 },
             };
         } catch (error) {
-            if(error instanceof Error){
                 return this.errorResponse(error);
-            } else {
-                return this.unknownErrorResponse()
-            }
         }
     }
 
-    async deleteAll(): Promise<ICRUDResponse<number>> {
+    async deleteAll(obj: {[key: string]: unknown}): Promise<ICRUDResponse<number>> {
         try {
-            const result = await this.repository.deleteAll();
+            if(!obj){
+                return {
+                    statusCode: 404,
+                    data: {
+                        message: 'Missing required @parameter filter obj',
+                    }
+                }
+            }
+
+            const result = await this.repository.deleteAll(obj);
             
             return {
                 statusCode:200,
@@ -130,29 +138,26 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
                 }
             }
         } catch (error) {
-            if(error instanceof Error){
-                return this.errorResponse(error);
-            } else {
-                return this.unknownErrorResponse()
-            }
+            return this.errorResponse(error);
         }
     }
 
-    private errorResponse(error: Error) {
-        return {
-            statusCode: 500,
-            data: {
-                message: error.message,
-            },
-        };
-    }
+    private errorResponse(error: any) {
+        if (error instanceof Error){
+            return {
+                statusCode: 500,
+                data: {
+                    message: error.message,
+                },
+            };
+        } else {
+            return {
+                statusCode: 500,
+                data: {
+                    message: "An unknown error occured"
+                }
+            }    
+        }
 
-    private unknownErrorResponse(){
-        return {
-            statusCode: 500,
-            data: {
-                message: "An Unknown error occured",
-            },
-        };
     }
 }

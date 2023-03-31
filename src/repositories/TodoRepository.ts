@@ -8,8 +8,8 @@ export class TodoRepository implements IRepository<TodoEntity>{
 
     constructor(private dataStorage: IDataStorage<TodoEntity>) {}
 
-    async getAll(): Promise<Required<TodoEntity[]>> {
-        const result = await this.dataStorage.find()
+    async getAll(obj: {[key: string]: unknown}): Promise<Required<TodoEntity[]>> {
+        const result = await this.dataStorage.find(obj)
         return result
     }
 
@@ -33,8 +33,8 @@ export class TodoRepository implements IRepository<TodoEntity>{
         return result
     }
 
-    async deleteAll(): Promise<number> {
-        const result = await this.dataStorage.deleteMany()
+    async deleteAll(obj: {[key: string]: unknown}): Promise<number> {
+        const result = await this.dataStorage.deleteMany(obj)
         return result
     }
 }

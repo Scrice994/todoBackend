@@ -6,7 +6,7 @@ describe("api", () => {
         await databaseConnection()
         await clearDatabase()
       })
-    
+
       afterEach(async () => {  
         await clearCollection('users')
       })
@@ -19,6 +19,16 @@ describe("api", () => {
         const USER_URL = "http://localhost:3005/user";
         const REGISTER_URL = USER_URL + '/signup'
         const LOGIN_URL = USER_URL + '/login'
+
+        describe("GET: /findUser", () => {
+            it("should return 200 statusCode and the user that match the given id",async () => {
+                const createUser = await axios.post(REGISTER_URL, {username: 'fakeUser123', password: 'asdasd123'})
+
+                const findUser = await axios.get(USER_URL + '/findUSer', { headers: {'Authorization': createUser.data.token }})
+
+                expect(findUser.data.response).toEqual(createUser.data.user)
+            })
+        })
 
         describe("POST: /signup",() => {
             it("should return 200 statusCode and specify JSON in header content type", async  () => {
@@ -45,8 +55,6 @@ describe("api", () => {
                 })
             })
             it("Should return 400 statusCode and errorMessage if user already exist in the DB", async () => {
-                await axios.post(REGISTER_URL, {username: 'fakeUser123', password: 'asdasd123'})
-
                 await axios.post(REGISTER_URL, {username: 'fakeUser123', password: 'asdasd123'}).catch(err => {
                     expect(err.response.status).toBe(400)
                     expect(err.response.data).toEqual({message: "This user already exist"})

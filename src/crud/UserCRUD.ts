@@ -21,11 +21,7 @@ export class UserCRUD implements ICRUD<UserEntity>{
                 }
             }
         } catch (error) {
-            if(error instanceof Error){
-                return this.errorResponse(error)
-            }else{
-                return this.unknownErrorResponse()
-            }
+            return this.errorResponse(error)
         }
     }
     async create(newElement: Omit<UserEntity, 'id'>): Promise<ICRUDResponse<UserEntity>> {
@@ -40,11 +36,7 @@ export class UserCRUD implements ICRUD<UserEntity>{
             }
             
         } catch (error) {
-            if(error instanceof Error){
-                return this.errorResponse(error)
-            }else{
-                return this.unknownErrorResponse()
-            } 
+            return this.errorResponse(error)
         }
 
     }
@@ -61,22 +53,22 @@ export class UserCRUD implements ICRUD<UserEntity>{
         throw new Error('Method not implemented.');
     }
 
-    private errorResponse(error: Error) {
-        return {
-            statusCode: 500,
-            data: {
-                message: error.message,
-            },
-        };
-    }
-
-    private unknownErrorResponse(){
-        return {
-            statusCode: 500,
-            data: {
-                message: "An unknown error occured"
-            }
+    private errorResponse(error: any) {
+        if (error instanceof Error){
+            return {
+                statusCode: 500,
+                data: {
+                    message: error.message,
+                },
+            };
+        } else {
+            return {
+                statusCode: 500,
+                data: {
+                    message: "An unknown error occured"
+                }
+            }    
         }
+
     }
-    
 }
