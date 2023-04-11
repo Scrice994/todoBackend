@@ -36,6 +36,7 @@ describe('unit', () => {
                             password: 'testPassword123',
                             salt: "mockSalt",
                             id: 'mockId',
+                            userRole: 'mockRole'
                         })
                     );
 
@@ -43,13 +44,15 @@ describe('unit', () => {
                         await repository.insertOne({
                             username: 'testUsername',
                             password: 'testPassword123',
-                            salt: "mockSalt"
+                            salt: "mockSalt",
+                            userRole: "mockRole"
                         })
                     ).toEqual({
                         username: 'testUsername',
                         password: 'testPassword123',
                         salt: "mockSalt",
                         id: 'mockId',
+                        userRole: 'mockRole'
                     });
                 });
             });

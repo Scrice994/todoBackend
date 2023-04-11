@@ -40,6 +40,22 @@ describe("api", () => {
                 expect(request.data.token).toBeDefined()
             })
 
+            it("should return 200 statusCode and have a tenantId when a form with groupName is submitted", async () => {
+                const request = await axios.post(REGISTER_URL, {username: 'fakeUser123', password: 'testPassword1', confirmPassword: 'testPassword1', groupName: 'Akatsuki'})
+
+                expect(request.status).toBe(200)
+                expect(request.data.user).toHaveProperty('tenantId')
+                expect(request.data.user.tenantId).toBeDefined()
+            })
+
+            test("When create two users with different groupName, userId and tenantId between users must be not equal", async () => {
+                const firstUser = await axios.post(REGISTER_URL, {username: 'fakeUser', password: 'testPassword1', confirmPassword: 'testPassword1', groupName: 'Akatsuki'})
+                const secondUSer = await axios.post(REGISTER_URL, {username: 'fakeUser2', password: 'testPassword1', confirmPassword: 'testPassword1', groupName: 'Libra'})
+                
+                expect(firstUser.data.user.id).not.toEqual(secondUSer.data.user.id)
+                expect(firstUser.data.user.tenantId).not.toEqual(secondUSer.data.user.tenantId)
+            })
+
             it("Should return 400 statusCode and errorMessage if username do not match confirm password", async () => {
                 await axios.post(REGISTER_URL, {username: 'fakeUser123' , password: 'Password1', confirmPassword: 'testPassword1'})
                 .catch(err => {

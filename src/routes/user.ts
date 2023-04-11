@@ -1,17 +1,18 @@
-import express from 'express'
-import { MongoDataStorage } from '../dataStorages/MongoDataStorage';
-import { User } from '../entities/mongo/userSchema';
-import { UserEntity } from '../entities/UserEntity';
-import { UserRepository } from '../repositories/UserRepository';
+import express from 'express';
 import { UserCRUD } from '../crud/UserCRUD';
-import { ValidCredentials } from '../utils/verifyCredentials/ValidCredentials';
+import { MongoDataStorage } from '../dataStorages/MongoDataStorage';
+import { UserEntity } from '../entities/UserEntity';
+import { User } from '../entities/mongo/userSchema';
+import { secret } from '../index';
+import { UserRepository } from '../repositories/UserRepository';
+import { authMiddleware } from '../utils/authMiddleware';
 import { CryptoPasswordHandler } from '../utils/cryptPassword/CryptoPasswordHandler';
 import { PasswordHandler } from '../utils/cryptPassword/PasswordHandler';
 import { JWTHandler } from '../utils/tokenHandler/JWTHandler';
 import { JsonWebTokenPkg } from '../utils/tokenHandler/JsonWebTokenPkg';
-import { secret } from '../index'
-import { authMiddleware } from '../utils/authMiddleware';
-import { Result } from 'express-validator';
+import { ValidCredentials } from '../utils/verifyCredentials/ValidCredentials';
+import { ICRUDResponse } from 'src/crud/ICRUD';
+import * as uuid from 'uuid';
 
 const routes = express.Router()
 
@@ -27,7 +28,7 @@ routes.get('/findUser', authMiddleware, async (req, res) => {
 
 routes.post('/signup', async (req, res, next) => {
 
-    const { username, password, confirmPassword } = req.body
+    const { username, password, confirmPassword, groupName } = req.body
 
     if(!username){
         return res.status(400).json({ message: "Username is required" })
@@ -63,11 +64,24 @@ routes.post('/signup', async (req, res, next) => {
 
     const cryptoObj = new PasswordHandler(new CryptoPasswordHandler()).cryptPassword(password)
 
-    const newUser = await new UserCRUD(REPOSITORY).create({
-        username: username,
-        password: cryptoObj.hashPassword,
-        salt: cryptoObj.salt
-    })
+    let newUser: ICRUDResponse<UserEntity>;
+
+    if(groupName){
+        newUser = await new UserCRUD(REPOSITORY).create({
+            username: username,
+            password: cryptoObj.hashPassword,
+            salt: cryptoObj.salt,
+            userRole: 'Admin',
+            tenantId: uuid.v4()
+        })
+    } else {
+        newUser = await new UserCRUD(REPOSITORY).create({
+            username: username,
+            password: cryptoObj.hashPassword,
+            salt: cryptoObj.salt,
+            userRole: 'Admin'
+        })
+    }
 
     if('response' in newUser.data){
         const user = newUser.data.response
@@ -79,6 +93,7 @@ routes.post('/signup', async (req, res, next) => {
     } else {
         return res.status(400).json({ message: "Error while trying to create user"})
     }
+    
 })
 
 routes.post('/login', async (req, res, next) => {

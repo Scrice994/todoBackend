@@ -11,7 +11,8 @@ describe("unit", () => {
                     username: "fakeUser",
                     password: "fakePassword",
                     salt: "fakeSalt",
-                    id: "fakeId"
+                    id: "fakeId",
+                    userRole: 'fakeRole'
                 }
 
                 describe("issueJWT()",() => {

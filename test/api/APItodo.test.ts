@@ -13,7 +13,7 @@ describe("api", () => {
   })
 
   beforeEach(async () => {
-    const createUser = await axios.post(REGISTER_URL, {username: 'TestUsername', password: 'TestPassword123'})
+    const createUser = await axios.post(REGISTER_URL, {username: 'TestUsername', password: 'TestPassword123', confirmPassword: 'TestPassword123'})
     await initializeTodoData(createUser.data.user.id)
   });
 

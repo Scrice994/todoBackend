@@ -11,7 +11,8 @@ describe('unit', () => {
                 username: "mockUsername", 
                 password: "mockPassword123", 
                 salt: "mockSalt", 
-                id: "mockId"
+                id: "mockId",
+                userRole: 'mockRole'
             }
 
             describe('readOne()', () => {
@@ -45,7 +46,7 @@ describe('unit', () => {
                         Promise.resolve(mockUser)
                     );
 
-                    expect(await crud.create({ username: "mockUsername", password: "mockPassword123", salt: "mockSalt" })).toEqual({
+                    expect(await crud.create({ username: "mockUsername", password: "mockPassword123", salt: "mockSalt", userRole: 'mockRole' })).toEqual({
                         statusCode: 200,
                         data: {
                             response: mockUser
@@ -57,7 +58,7 @@ describe('unit', () => {
                     UserRepositoryMock.insertOne.mockImplementationOnce(() => { throw new Error("fake Error")}
                     );
 
-                    expect(await crud.create({ username: "mockUsername", password: "mockPassword123", salt: "mockSalt" })).toEqual({
+                    expect(await crud.create({ username: "mockUsername", password: "mockPassword123", salt: "mockSalt", userRole: 'mockRole' })).toEqual({
                         statusCode: 500,
                         data: {
                             message: "fake Error"
@@ -68,7 +69,7 @@ describe('unit', () => {
                 it('Should return statusCode 500 and specific error.message if an unknown error occour', async () => {
                     UserRepositoryMock.insertOne.mockImplementationOnce(() => { throw undefined });
 
-                    expect(await crud.create({ username: "mockUsername", password: "mockPassword123", salt: "mockSalt" })).toEqual({
+                    expect(await crud.create({ username: "mockUsername", password: "mockPassword123", salt: "mockSalt", userRole: 'mockRole' })).toEqual({
                         statusCode: 500,
                         data: {
                             message: "An unknown error occured"

@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { Todo } from "../../../src/entities/mongo/todoSchema";
 
 export const databaseConnection = async () => {
+  mongoose.set('strictQuery', false)
   await mongoose.connect("mongodb://localhost:27017/todoList");
 };
 

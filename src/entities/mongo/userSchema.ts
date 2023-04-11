@@ -6,6 +6,8 @@ const userSchema = new Schema({
     password: { type: String, require: true },
     salt: { type: String, require: true },
     id: { default: uuid.v4, type: String },
+    userRole: { type: String, require: true },
+    tenantId: { type: String, require: false }
 });
 
 type User = InferSchemaType<typeof userSchema>;
