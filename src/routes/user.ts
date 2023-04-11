@@ -11,6 +11,7 @@ import { JWTHandler } from '../utils/tokenHandler/JWTHandler';
 import { JsonWebTokenPkg } from '../utils/tokenHandler/JsonWebTokenPkg';
 import { secret } from '../index'
 import { authMiddleware } from '../utils/authMiddleware';
+import { Result } from 'express-validator';
 
 const routes = express.Router()
 
@@ -26,7 +27,21 @@ routes.get('/findUser', authMiddleware, async (req, res) => {
 
 routes.post('/signup', async (req, res, next) => {
 
-    const { username, password } = req.body
+    const { username, password, confirmPassword } = req.body
+
+    if(!username){
+        return res.status(400).json({ message: "Username is required" })
+    }
+    if(!password){
+        return res.status(400).json({ message: "Password is required" })
+    }
+    if(!confirmPassword){
+        return res.status(400).json({ message: "Confirm password is required" })
+    }
+
+    if(password !== confirmPassword){
+        return res.status(400).json({ message: "Password & confirm password do not match" })
+    }
 
     const credentials = new ValidCredentials(username, password);
 
