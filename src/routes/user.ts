@@ -119,5 +119,68 @@ routes.post('/login', async (req, res, next) => {
     }
 })
 
+routes.post('/admin/groupMemberAccount', authMiddleware, async (req, res, next) => {
+
+    const userId = req.userId
+
+    const findUser = await new UserCRUD(REPOSITORY).readOne({id: userId})
+
+    if('response' in findUser.data){
+        if(findUser.data.response.userRole === 'Admin' && findUser.data.response.tenantId){
+            const { username, password, confirmPassword } = req.body
+
+            if(!username){
+                return res.status(400).json({ message: "Username is required" })
+            }
+            if(!password){
+                return res.status(400).json({ message: "Password is required" })
+            }
+            if(!confirmPassword){
+                return res.status(400).json({ message: "Confirm password is required" })
+            }
+        
+            if(password !== confirmPassword){
+                return res.status(400).json({ message: "Password & confirm password do not match" })
+            }
+        
+            const credentials = new ValidCredentials(username, password);
+        
+            const validUsername = credentials.usernameCheck()
+            const validPassword = credentials.passwordCheck()
+        
+            if(!validUsername){
+                return res.status(400).json({ message: "Username must have only alphanumeric chars and be 4-20 length" })
+            }
+            if(!validPassword){
+                return res.status(400).json({ message: "Password must be at least 6 length, and have at least 1 number and 1 letter"})
+            }
+        
+            const findExistingUser = await new UserCRUD(REPOSITORY).readOne({username: username})
+        
+            if('response' in findExistingUser.data){
+                return res.status(400).json({ message: "This user already exist" })
+            }
+
+            const cryptoObj = new PasswordHandler(new CryptoPasswordHandler()).cryptPassword(password)
+
+            const newUser = await new UserCRUD(REPOSITORY).create({
+                username: username,
+                password: cryptoObj.hashPassword,
+                salt: cryptoObj.salt,
+                userRole: 'Member',
+                tenantId: userId
+            })
+
+            if('response' in newUser.data){
+                return res.status(200).json({ message: "User created successfully" })
+            } else {
+                return res.status(400).json({ message: "Error while trying to create user" })
+            }
+        }
+        return res.status(401).json({ message: "you are not Authorized" })
+    }
+    return res.status(404).json({ message: "User not found" })
+})
+
 
 export default routes;
