@@ -119,7 +119,7 @@ routes.post('/login', async (req, res, next) => {
     }
 })
 
-routes.post('/admin/groupMemberAccount', authMiddleware, async (req, res, next) => {
+routes.post('/admin/create-member-account', authMiddleware, async (req, res, next) => {
 
     const userId = req.userId
 
@@ -172,7 +172,7 @@ routes.post('/admin/groupMemberAccount', authMiddleware, async (req, res, next) 
             })
 
             if('response' in newUser.data){
-                return res.status(200).json({ message: "User created successfully" })
+                return res.status(200).json({ success: "User created successfully" })
             } else {
                 return res.status(400).json({ message: "Error while trying to create user" })
             }
