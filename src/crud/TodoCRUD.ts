@@ -11,22 +11,11 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
     async read(obj: { [key: string]: unknown }): Promise<ICRUDResponse<TodoEntity[]>> {
         try {
             if(!obj){
-                return {
-                    statusCode: 404,
-                    data: {
-                        message: 'Missing required @parameter filter obj',
-                    }
-                }
+                return this.customErrorResponse(404, 'Missing required @parameter filter obj')
             }
 
             const todos = await this.repository.getAll(obj);
-
-            return {
-                statusCode: 200,
-                data: {
-                    response: todos,
-                },
-            };
+            return this.successfullResponse(todos)
 
         } catch (error) {
             return this.errorResponse(error);
@@ -40,31 +29,16 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
     async create(newTodo: Omit<TodoEntity, 'id'>): Promise<ICRUDResponse<TodoEntity>> {
         try {
             if (!newTodo.text || newTodo.text === '') {
-                return {
-                    statusCode: 404,
-                    data: {
-                        message: 'Missing required @parameter text',
-                    },
-                };
+                return this.customErrorResponse(404, 'Missing required @parameter text')
             }
 
             if (!newTodo.userId) {
-                return {
-                    statusCode: 404,
-                    data: {
-                        message: 'Missing required @parameter userId',
-                    },
-                };
+                return this.customErrorResponse(404, 'Missing required @parameter userId')
             }
 
             const result = await this.repository.insertOne(newTodo);
+            return this.successfullResponse(result)
 
-            return {
-                statusCode: 200,
-                data: {
-                    response: result,
-                },
-            };
         } catch (error) {
             return this.errorResponse(error);
         }
@@ -73,22 +47,12 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
     async update(updateTodo: Required<IEntity> & Partial<TodoEntity>): Promise<ICRUDResponse<TodoEntity>> {
         try {
             if (!updateTodo.id) {
-                return {
-                    statusCode: 404,
-                    data: {
-                        message: 'Missing or invalid required @parameter id',
-                    },
-                };
+                return this.customErrorResponse(404, 'Missing or invalid required @parameter id')
             }
 
             const result = await this.repository.updateOne(updateTodo);
+            return this.successfullResponse(result)
 
-            return {
-                statusCode: 200,
-                data: {
-                    response: result,
-                },
-            };
         } catch (error) {
             return this.errorResponse(error);
         }
@@ -97,22 +61,12 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
     async delete(id: DataStorageId): Promise<ICRUDResponse<TodoEntity>> {
         try {
             if (!id) {
-                return {
-                    statusCode: 404,
-                    data: {
-                        message: 'Missing or invalid required @parameter id',
-                    },
-                };
+                return this.customErrorResponse(404, 'Missing or invalid required @parameter id')
             }
 
             const result = await this.repository.deleteOne(id);
+            return this.successfullResponse(result)
 
-            return {
-                statusCode: 200,
-                data: {
-                    response: result,
-                },
-            };
         } catch (error) {
                 return this.errorResponse(error);
         }
@@ -121,24 +75,32 @@ export class TodoCRUD implements ICRUD<TodoEntity> {
     async deleteAll(obj: {[key: string]: unknown}): Promise<ICRUDResponse<number>> {
         try {
             if(!obj){
-                return {
-                    statusCode: 404,
-                    data: {
-                        message: 'Missing required @parameter filter obj',
-                    }
-                }
+                return this.customErrorResponse(404, 'Missing required @parameter filter obj')
             }
 
             const result = await this.repository.deleteAll(obj);
-            
-            return {
-                statusCode:200,
-                data: {
-                    response: result
-                }
-            }
+            return this.successfullResponse(result)
+
         } catch (error) {
             return this.errorResponse(error);
+        }
+    }
+
+    private successfullResponse(result: any){
+        return {
+             statusCode: 200,
+             data: {
+                response: result
+            }
+        }
+    }
+
+    private customErrorResponse(statusCode: number, customErrorMessage: string){
+        return {
+            statusCode: statusCode,
+            data: {
+                message: customErrorMessage,
+            }
         }
     }
 

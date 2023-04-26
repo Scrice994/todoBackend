@@ -1,0 +1,3 @@
+interface IEventEmitter{
+    newTodo()
+}

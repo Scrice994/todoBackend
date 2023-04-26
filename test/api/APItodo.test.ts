@@ -20,6 +20,7 @@ describe("api", () => {
   afterEach(async () => {
     await clearCollection('users')  
     await clearCollection('todos')
+    jest.restoreAllMocks()
   })
 
   afterAll(async () => {
@@ -28,6 +29,8 @@ describe("api", () => {
 
 
   describe("/todo", () => {
+
+
     describe("authMiddleware", () => {
       it("Should return statusCode 401 and error.message if JWT is not provided", async () => {
         await axios.post(LOGIN_URL, {username: 'TestUsername', password: 'TestPassword123'})
@@ -57,7 +60,7 @@ describe("api", () => {
     })
 
     describe("GET", () => {
-      it("Should get all todos in storage", async () => {
+      it("Should get all todos in the database", async () => {
         const loginUser = await axios.post(LOGIN_URL, {username: 'TestUsername', password: 'TestPassword123'})
         
         const response = await axios.get(TODO_URL, {headers: {'Authorization': loginUser.data.token}});
@@ -83,8 +86,7 @@ describe("api", () => {
       it("Should return statusCode 200 and newTodo in the DB", async () => {
         const loginUser = await axios.post(LOGIN_URL, {username: 'TestUsername', password: 'TestPassword123'})
 
-        const newTodo = await axios.post(TODO_URL, {text: "TestText", usedId: loginUser.data.user.id}, {headers: {'Authorization': loginUser.data.token}});
-        console.log(newTodo.data);
+        const newTodo = await axios.post(TODO_URL, {text: "TestText", userId: loginUser.data.user.id}, {headers: {'Authorization': loginUser.data.token}});
 
         expect(newTodo.status).toBe(200)
         expect(newTodo.data).toEqual({
@@ -100,13 +102,14 @@ describe("api", () => {
       it("should return statusCode 404 and error.message if newTodo text is missing", async () => {
         const loginUser = await axios.post(LOGIN_URL, {username: 'TestUsername', password: 'TestPassword123'})
 
-        await axios.post(TODO_URL, {text: "", usedId: loginUser.data.user.id}, {headers: {'Authorization': loginUser.data.token}})
+        await axios.post(TODO_URL, {text: "", userId: loginUser.data.user.id}, {headers: {'Authorization': loginUser.data.token}})
         .catch(err => {
           expect(err.response.status).toBe(404)
           expect(err.response.data).toEqual({ message: 'Missing required @parameter text' })
         });
     
       })
+
       it("should return statusCode 404 and error.message if newTodo userId is missing", async () => {
         const loginUser = await axios.post(LOGIN_URL, {username: 'TestUsername', password: 'TestPassword123'})
 

@@ -13,13 +13,7 @@ export class UserCRUD implements ICRUD<UserEntity>{
     async readOne(obj: {[key: string]: unknown}): Promise<ICRUDResponse<UserEntity>> {
         try {
             const result = await this.repository.getOneByKey(obj)    
-
-            return {
-                statusCode: 200,
-                data: {
-                    response: result
-                }
-            }
+            return this.successfullResponse(result)
         } catch (error) {
             return this.errorResponse(error)
         }
@@ -27,14 +21,7 @@ export class UserCRUD implements ICRUD<UserEntity>{
     async create(newElement: Omit<UserEntity, 'id'>): Promise<ICRUDResponse<UserEntity>> {
         try {
             const result = await this.repository.insertOne(newElement)
-            
-            return {
-                statusCode: 200,
-                data: {
-                    response: result
-                }
-            }
-            
+            return this.successfullResponse(result)  
         } catch (error) {
             return this.errorResponse(error)
         }
@@ -51,6 +38,15 @@ export class UserCRUD implements ICRUD<UserEntity>{
 
     async deleteAll(): Promise<ICRUDResponse<number>> {
         throw new Error('Method not implemented.');
+    }
+
+    private successfullResponse(result: any){
+        return {
+             statusCode: 200,
+             data: {
+                response: result
+            }
+        }
     }
 
     private errorResponse(error: any) {
