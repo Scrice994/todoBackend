@@ -168,7 +168,7 @@ routes.post('/admin/create-member-account', authMiddleware, async (req, res, nex
                 password: cryptoObj.hashPassword,
                 salt: cryptoObj.salt,
                 userRole: 'Member',
-                tenantId: userId
+                tenantId: findUser.data.response.tenantId
             })
 
             if('response' in newUser.data){

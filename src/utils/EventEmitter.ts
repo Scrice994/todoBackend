@@ -31,7 +31,7 @@ export class EventEmitter {
                 method: 'POST',
                 body: {
                     type: eventType,
-                    data: JSON.stringify(content)
+                    data: content
                 }
             }) 
 
