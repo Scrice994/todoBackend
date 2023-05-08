@@ -1,5 +1,5 @@
 import axios from "axios";
-import { clearCollection, clearDatabase, closeDatabaseConnection, databaseConnection } from "./utils/mongooseTestUtils";
+import { clearDB, clearDatabase, closeDatabaseConnection, databaseConnection } from "./utils/mongooseTestUtils";
 
 describe("api", () => {
     beforeAll(async () => {
@@ -7,8 +7,8 @@ describe("api", () => {
         await clearDatabase()
       })
 
-      afterEach(async () => {  
-        await clearCollection('users')
+      beforeEach(async () => {  
+        await clearDB()
       })
     
       afterAll(async () => {

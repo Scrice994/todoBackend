@@ -1,5 +1,5 @@
 import axios from "axios";
-import { databaseConnection, closeDatabaseConnection, clearDatabase, initializeTodoData, clearCollection } from "./utils/mongooseTestUtils";
+import { databaseConnection, closeDatabaseConnection, clearDatabase, initializeTodoData, clearDB } from "./utils/mongooseTestUtils";
 
 const TODO_URL = "http://localhost:3005/todo";
 const REGISTER_URL = "http://localhost:3005/user/signup"
@@ -13,15 +13,11 @@ describe("api", () => {
   })
 
   beforeEach(async () => {
+    await clearDB()
+    jest.restoreAllMocks()
     const createUser = await axios.post(REGISTER_URL, {username: 'TestUsername', password: 'TestPassword123', confirmPassword: 'TestPassword123'})
     await initializeTodoData(createUser.data.user.id)
   });
-
-  afterEach(async () => {
-    await clearCollection('users')  
-    await clearCollection('todos')
-    jest.restoreAllMocks()
-  })
 
   afterAll(async () => {
     await closeDatabaseConnection()

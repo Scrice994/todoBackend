@@ -13,6 +13,7 @@ export class JWTHandler implements IJWTHandler{
         const expiresIn = '1d';
   
         const payload = {
+          group: user.tenantId,
           sub: user.id,
           iat: Date.now()
         };
