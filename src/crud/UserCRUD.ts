@@ -1,8 +1,11 @@
-import { IRepository } from 'src/repositories/IRepository';
+import { IRepository } from '../repositories/IRepository';
 import { ICRUD } from './ICRUD';
-import { UserEntity } from 'src/entities/UserEntity';
-import { IEntity } from 'src/entities/IEntity';
+import { UserEntity } from '../entities/UserEntity';
+import { IEntity } from '../entities/IEntity';
 import { ICRUDResponse } from './ICRUD';
+import { ValidCredentials } from '../utils/verifyCredentials/ValidCredentials';
+import { CryptoPasswordHandler } from '../utils/cryptPassword/CryptoPasswordHandler';
+import { PasswordHandler } from '../utils/cryptPassword/PasswordHandler';
 
 export class UserCRUD implements ICRUD<UserEntity>{
     constructor(private repository: IRepository<UserEntity>){}
@@ -10,6 +13,7 @@ export class UserCRUD implements ICRUD<UserEntity>{
     async read(): Promise<ICRUDResponse<UserEntity[]>> {
         throw new Error('Method not implemented.');
     }
+
     async readOne(obj: {[key: string]: unknown}): Promise<ICRUDResponse<UserEntity>> {
         try {
             const result = await this.repository.getOneByKey(obj)    
@@ -18,9 +22,28 @@ export class UserCRUD implements ICRUD<UserEntity>{
             return this.errorResponse(error)
         }
     }
-    async create(newElement: Omit<UserEntity, 'id'>): Promise<ICRUDResponse<UserEntity>> {
+
+    async create(newElement: Omit<UserEntity, 'id' | 'salt'>): Promise<ICRUDResponse<UserEntity>> {
         try {
-            const result = await this.repository.insertOne(newElement)
+            if(!newElement.username){
+                return this.customErrorResponse(404, 'Missing required @parameter username')
+            }
+            if(!newElement.password){
+                return this.customErrorResponse(404, 'Missing required @parameter password')
+            }
+
+            const credentials = new ValidCredentials(newElement.username, newElement.password);
+
+            if(!credentials.usernameCheck()){
+                return this.customErrorResponse(404, 'Invalid @parameter username')
+            }
+            if(!credentials.passwordCheck()){
+                return this.customErrorResponse(404, 'Invalid @parameter password')
+            }
+
+            const hashPasswordSalt = new PasswordHandler(new CryptoPasswordHandler()).cryptPassword(newElement.password)
+
+            const result = await this.repository.insertOne({ ...newElement, ...hashPasswordSalt })
             return this.successfullResponse(result)  
         } catch (error) {
             return this.errorResponse(error)
@@ -45,6 +68,15 @@ export class UserCRUD implements ICRUD<UserEntity>{
              statusCode: 200,
              data: {
                 response: result
+            }
+        }
+    }
+
+    private customErrorResponse(statusCode: number, customErrorMessage: string){
+        return {
+            statusCode: statusCode,
+            data: {
+                message: customErrorMessage,
             }
         }
     }

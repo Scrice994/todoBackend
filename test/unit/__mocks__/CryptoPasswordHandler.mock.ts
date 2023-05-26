@@ -1,4 +1,4 @@
-import { ICrypterDependency } from "../../../src/utils/cryptPassword/ICrypterDependency";
+import { ICrypterDependency } from "../../../src/utils/cryptPassword//interfaces/ICrypterDependency";
 
 export class CryptoPasswordHandlerMock implements ICrypterDependency{
 

@@ -1,28 +1,7 @@
-import { IHttpClient } from "src/entities/IHttpClient";
+import { IHttpClient } from "src/utils/HttpClient/IHttpClient";
+import { ISendEventResponse, IEventEmitter } from './IEventEmitter'
 
-interface sendEventBaseResponse{
-    statusCode: number
-    data: {[key: string]: unknown}
-}
-
-interface SendEventSuccessResponse<T> extends sendEventBaseResponse {
-    statusCode: number,
-    data: {
-        eventType: string,
-        content: T
-    }
-}
-
-interface SendEventErrorResponse extends sendEventBaseResponse {
-    statusCode: number,
-    data: {
-        message: string
-    }
-}
-
-type ISendEventResponse = SendEventSuccessResponse<any> | SendEventErrorResponse
-
-export class EventEmitter {
+export class EventEmitter implements IEventEmitter{
     constructor(private httpClient: IHttpClient){}
 
     async sendEvent(eventType: string, content: any): Promise<ISendEventResponse>{

@@ -14,7 +14,7 @@ describe("unit", () => {
 
                     expect(testPasswordHandler.cryptPassword('testPassword')).toEqual({
                         salt: 'fakeSalt',
-                        hashPassword: 'fakeHash'
+                        password: 'fakeHash'
                     })
                 })
             })

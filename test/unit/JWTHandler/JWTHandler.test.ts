@@ -1,5 +1,5 @@
 import { JsonWebTokenPkgMock } from "../__mocks__/JsonWebTokenPkg.mock"
-import { JWTHandler } from '../../../src/utils/tokenHandler/JWTHandler'
+import { JWTHandler } from '../../../src/utils/tokenHandler/JWTHandler/JWTHandler'
 
 describe("unit", () => {
     describe("utils", () => {

@@ -1,5 +1,5 @@
 import { HttpClientMock } from "../__mocks__/HttpClient.mock"
-import { EventEmitter } from "../../../src/utils/EventEmitter"
+import { EventEmitter } from "../../../src/utils/EventEmitter/EventEmitter"
 describe("unit", () => {
     const clientMock = new HttpClientMock()
     const EVENT = new EventEmitter(clientMock)

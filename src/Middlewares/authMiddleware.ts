@@ -1,5 +1,5 @@
-import { JWTHandler } from '../utils/tokenHandler/JWTHandler';
-import { JsonWebTokenPkg } from '../utils/tokenHandler/JsonWebTokenPkg';
+import { JWTHandler } from '../utils/tokenHandler/JWTHandler/JWTHandler';
+import { JsonWebTokenPkg } from '../utils/tokenHandler/JsonWebTokenPkg/JsonWebTokenPkg';
 import { secret } from '../index';
 import { NextFunction, Request, Response } from 'express';
 

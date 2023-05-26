@@ -23,7 +23,7 @@ export type ICRUDResponse<T> = ICRUDSuccessResponse<T> | ICrudErrorResponse;
 export interface ICRUD<T extends IEntity>{
     read(obj: { [key: string]: unknown }): Promise<ICRUDResponse<T[]>>;
     readOne(obj: { [key: string]: unknown }): Promise<ICRUDResponse<T>>
-    create(newElement: Omit<T, 'id'>): Promise<ICRUDResponse<T>>;
+    create(newElement: Omit<T, 'id' | 'salt'>): Promise<ICRUDResponse<T>>;
     update(updateElement: Required<IEntity> & Partial<T>): Promise<ICRUDResponse<T>>;
     delete(id: DataStorageId): Promise<ICRUDResponse<T>>;
     deleteAll(obj: {[key: string]: unknown}): Promise<ICRUDResponse<number>>

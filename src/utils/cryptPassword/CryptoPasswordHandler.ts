@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import { ICrypterDependency } from "./ICrypterDependency";
+import { ICrypterDependency } from "./interfaces/ICrypterDependency";
 
 export class CryptoPasswordHandler implements ICrypterDependency{
     hashPassword(password: string,  salt: string): string {

@@ -1,14 +1,13 @@
 import { IJWTHandler } from "./IJWTHandler";
-import { IJWTPkg } from "./IJWTPkg";
-import { PayloadEntity } from "../../entities/PayloadEntity";
-import { UserEntity } from "../../entities/UserEntity";
-import { IJWTEntity } from "../../entities/IJWTEntity";
-import { ITokenPayloadEntity } from "../../entities/ITokenPayloadEntity";
+import { IJsonWebTokenPkg } from "../JsonWebTokenPkg/IJsonWebTokenPkg";
+import { IPayload } from "../interfaces/IPayload";
+import { UserEntity } from "../../../entities/UserEntity";
+import { IToken } from "../interfaces/IToken";
 
 export class JWTHandler implements IJWTHandler{
-    constructor(private jwtPkg: IJWTPkg){}
+    constructor(private jwtPkg: IJsonWebTokenPkg){}
 
-    issueJWT(user: UserEntity, secret: string): IJWTEntity {
+    issueJWT(user: UserEntity, secret: string): IToken {
 
         const expiresIn = '1d';
   
@@ -26,12 +25,12 @@ export class JWTHandler implements IJWTHandler{
         }
     }
 
-    checkJWT(token: string, secret: string): ITokenPayloadEntity {
+    checkJWT(token: string, secret: string): IPayload {
         const result = this.jwtPkg.verifyToken(token, secret)
         return result
     }
 
-    private callSignedToken(payload: PayloadEntity, secret: string, expiresIn: string): string {
+    private callSignedToken(payload: IPayload, secret: string, expiresIn: string): string {
         const token = this.jwtPkg.singToken(payload, secret, expiresIn)
         return token
     }

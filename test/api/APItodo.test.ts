@@ -161,12 +161,11 @@ describe("api", () => {
     describe("DELETE ALL", () => {
       it("Should remove all todos from database", async () => {
         const loginUser = await axios.post(LOGIN_URL, {username: 'TestUsername', password: 'TestPassword123'})
-
+        const getTodos = await axios.get(TODO_URL, {headers: {'Authorization': loginUser.data.token}})
         const deleteAllTodos = await axios.delete(`${TODO_URL}/deleteAll`, {headers: {'Authorization': loginUser.data.token}})
-
         const response = await axios.get(TODO_URL, {headers: {'Authorization': loginUser.data.token}})
 
-        expect(deleteAllTodos.data).toEqual({ response: 2 })
+        expect(deleteAllTodos.data).toEqual(getTodos.data)
         expect(response.data).toEqual({ response: [] })
       })
     })

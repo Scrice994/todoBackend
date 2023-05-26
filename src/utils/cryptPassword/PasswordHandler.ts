@@ -1,19 +1,19 @@
-import { ICrypterDependency } from "./ICrypterDependency";
-import { IPasswordHandler } from "./IPasswordHandler";
-import { IHashPasswordEntity } from "../../entities/IHashPasswordEntity";
+import { ICrypterDependency } from "./interfaces/ICrypterDependency";
+import { IPasswordHandler } from "./interfaces/IPasswordHandler";
+import { IHashPassword } from "./interfaces/IHashPassword";
 
 export class PasswordHandler implements IPasswordHandler{
 
     constructor(private crypterDependency: ICrypterDependency){}
 
-    cryptPassword(password: string): IHashPasswordEntity {
+    cryptPassword(password: string): IHashPassword {
         const salt = this.crypterDependency.generateSalt(32);
 
         const cryptedPassword = this.crypterDependency.hashPassword(password, salt);
         
         return {
             salt: salt,
-            hashPassword: cryptedPassword
+            password: cryptedPassword
         };
     }
     
